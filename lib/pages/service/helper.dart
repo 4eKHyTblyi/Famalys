@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperFunctions {
@@ -69,6 +70,22 @@ class HelperFunctions {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userProfilePicKey);
   }
+}
+
+void nextScreen(context, page) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+}
+
+void nextScreenReplace(context, page) {
+  Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => page));
+}
+
+void showSnackBar(String value, BuildContext context, Color color) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(value),
+    backgroundColor: color,
+  ));
 }
 
 Route createRoute(Widget Function() createPage) {
