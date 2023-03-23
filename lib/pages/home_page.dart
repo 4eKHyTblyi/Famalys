@@ -1,3 +1,4 @@
+import 'package:famalys/pages/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {}, icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: const Drawer(),
+      drawer: const MyDrawer(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),

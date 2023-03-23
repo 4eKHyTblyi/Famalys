@@ -1,5 +1,6 @@
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
+import 'package:famalys/pages/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:famalys/pages/service/helper.dart';
 
@@ -23,10 +24,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               Image.asset("assets/LOGO_IN_AUTH.png"),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.asset("assets/FAMILIES_LOGIN.png"),
               const SizedBox(
                 height: 10,
               ),
@@ -91,6 +88,8 @@ class _LoginPageState extends State<LoginPage> {
                             showSnackBar(
                                 'Поле пароля пустое!', context, Colors.red);
                           } else {
+                            AuthService().loginWithUserNameandPassword(
+                                tel.text, password.text);
                             showSnackBar(
                                 'Вы успешно вошли!', context, Colors.green);
                             nextScreen(context, const HomePage());
@@ -112,6 +111,9 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
+                          image: const DecorationImage(
+                              image: AssetImage('assets/Acuarela2.png'),
+                              fit: BoxFit.cover),
                           gradient: const LinearGradient(colors: [
                             Color.fromRGBO(255, 166, 182, 1),
                             Color.fromRGBO(255, 232, 172, 1),

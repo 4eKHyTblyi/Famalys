@@ -1,4 +1,5 @@
 import 'package:famalys/pages/auth/login_page.dart';
+import 'package:famalys/pages/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../service/helper.dart';
@@ -11,6 +12,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController tel = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             children: [
               Image.asset("assets/LOGO_IN_AUTH.png"),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.asset("assets/FAMILIES_LOGIN.png"),
               const SizedBox(
                 height: 10,
               ),
@@ -42,12 +41,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(239, 242, 255, 1),
                     borderRadius: BorderRadius.circular(25)),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: tel,
+                  decoration: const InputDecoration(
                     hintStyle:
                         TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
                     hintText: 'Моб. телефон или эл. адрес',
-                    fillColor: const Color.fromRGBO(239, 242, 255, 1),
+                    fillColor: Color.fromRGBO(239, 242, 255, 1),
                     border: InputBorder.none,
                   ),
                 ),
@@ -61,6 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: const Color.fromRGBO(239, 242, 255, 1),
                     borderRadius: BorderRadius.circular(25)),
                 child: TextField(
+                  controller: password,
                   decoration: InputDecoration(
                     hintStyle: const TextStyle(
                         color: Color.fromRGBO(125, 132, 168, 1)),
@@ -75,7 +76,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 20,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AuthService().registerUserWithEmailandPassword(
+                        tel.text, tel.text, password.text);
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
                     backgroundColor: Colors.transparent,
@@ -90,12 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [
-                          Color.fromRGBO(255, 166, 182, 1),
-                          Color.fromRGBO(255, 232, 172, 1),
-                          Color.fromRGBO(193, 237, 152, 1),
-                          Color.fromRGBO(166, 228, 255, 1),
-                        ]),
+                        image: const DecorationImage(
+                            image: AssetImage('assets/Acuarela2.png'),
+                            fit: BoxFit.cover),
                         borderRadius: BorderRadius.circular(25),
                       ),
                       child: const Text(
