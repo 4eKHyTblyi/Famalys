@@ -16,10 +16,10 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
-        return ('No user found for that email.');
+        return ('Пользователь не найден.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
-        return ('Wrong password provided for that user.');
+        return ('Неверный пароль.');
       }
     }
   }
@@ -30,12 +30,14 @@ class AuthService {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseAuth.instance.currentUser!.updateDisplayName('name');
+      HelperFunctions.saveUserLoggedInStatus(true);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return ('The password provided is too weak.');
+        return ('Пароль слишком слабый.');
       } else if (e.code == 'email-already-in-use') {
-        return ('The account already exists for that email.');
+        return ('Аккаунт уже существует.');
       }
     } catch (e) {
       print(e);

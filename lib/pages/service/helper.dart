@@ -12,6 +12,14 @@ class HelperFunctions {
   static String displayNameKey = "USERDISPLAYNAMEKEY";
   static String userProfilePicKey = "USERPROFILEPICKEY";
 
+  static TextStyle h1 = const TextStyle(
+      color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500);
+
+  static TextStyle pGrey = const TextStyle(
+      color: Color.fromRGBO(125, 132, 168, 1),
+      fontSize: 14,
+      fontWeight: FontWeight.w400);
+
   // saving the data to SF
 
   static Future<bool> saveUserLoggedInStatus(bool isUserLoggedIn) async {
