@@ -22,7 +22,15 @@
           }
         },
         {
-          "client_id": "903808321976-bmjuc9g8ffbit6327uf84kc9lobadjo9.apps.googleusercontent.com",
+          "client_id": "903808321976-5sne67rqn447n4ni8o0u3gn7t9mo3m94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.famalys",
+            "certificate_hash": "91a0b699d741fbe029b71db77df926ba6051b429"
+          }
+        },
+        {
+          "client_id": "903808321976-42ikpstqng3ojtgjtr6id3rtubup4aie.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "903808321976-bmjuc9g8ffbit6327uf84kc9lobadjo9.apps.googleusercontent.com",
+              "client_id": "903808321976-42ikpstqng3ojtgjtr6id3rtubup4aie.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

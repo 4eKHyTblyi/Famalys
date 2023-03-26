@@ -1,8 +1,13 @@
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/auth_service.dart';
+import 'package:famalys/pages/service/provider/vk_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:famalys/pages/service/helper.dart';
+import 'package:flutter_login_vk/flutter_login_vk.dart';
+import 'package:provider/provider.dart';
+
+import '../service/provider/google_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -41,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: const Color.fromRGBO(239, 242, 255, 1),
                       borderRadius: BorderRadius.circular(25)),
                   child: TextFormField(
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.emailAddress,
                     controller: tel,
                     validator: (val) {
                       return RegExp(
@@ -151,8 +156,37 @@ class _LoginPageState extends State<LoginPage> {
                                 TextStyle(fontSize: 20, color: Colors.blueGrey),
                           ),
                         )),
-                    Image.asset('assets/google.png'),
-                    Image.asset('assets/vk.png'),
+                    TextButton(
+                        onPressed: () {
+                          final provider = Provider.of<GoogleSignInProvider>(
+                              context,
+                              listen: false);
+
+                          provider.googleLogin();
+                        },
+                        child: Image.asset('assets/google.png')),
+                    TextButton(
+                        onPressed: () async {
+                          final plugin = VKLogin();
+
+                          await plugin.initSdk();
+
+                          final res = await plugin.logIn(scope: [
+                            VKScope.email,
+                          ]);
+
+                          if (res.isError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Log In failed: ${res.asError!.error}'),
+                              ),
+                            );
+                          } else {
+                            final loginResult = res.asValue!.value;
+                          }
+                        },
+                        child: Image.asset('assets/vk.png')),
                   ],
                 ),
                 const SizedBox(

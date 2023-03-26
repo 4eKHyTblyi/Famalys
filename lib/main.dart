@@ -3,8 +3,10 @@ import 'package:famalys/pages/auth/login_page.dart';
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/helper.dart';
+import 'package:famalys/pages/service/provider/google_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,11 +44,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   // This widget is the root of your application.
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: _isSignedIn ? const HomePage() : const LoginPage(),
-      routes: {},
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => GoogleSignInProvider(),
+        child: MaterialApp(
+          home: _isSignedIn ? const HomePage() : const LoginPage(),
+        ),
+      );
 }

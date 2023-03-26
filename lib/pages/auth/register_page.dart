@@ -48,6 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: const Color.fromRGBO(239, 242, 255, 1),
                       borderRadius: BorderRadius.circular(25)),
                   child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     controller: tel,
                     validator: (val) {
                       return RegExp(
