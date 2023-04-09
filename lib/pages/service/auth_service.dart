@@ -1,3 +1,4 @@
+import 'package:famalys/pages/service/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,13 +45,14 @@ class AuthService {
   }
 
   // register
-  Future registerUserWithEmailandPassword(
-      String fullName, String email, String password) async {
+  Future registerUserWithEmailandPassword(String fullName, String email,
+      String password, photoUrl, nickName) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseAuth.instance.currentUser!.updateDisplayName('name');
+      FirebaseAuth.instance.currentUser!.updateDisplayName(nickName);
       HelperFunctions.saveUserLoggedInStatus(true);
+      DataBaseService().addUserData(photoUrl, nickName, fullName);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

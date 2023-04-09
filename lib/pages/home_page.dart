@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
 import 'package:famalys/pages/widgets/drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,9 +32,29 @@ class _HomePageState extends State<HomePage> {
     borderRadius: BorderRadius.circular(100),
   );
 
+  String fio = '';
+
+  getFio() async {
+    var doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      fio = doc.get('fio');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getFio();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: MyBottomNavBar(),
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
@@ -50,7 +73,9 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {}, icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(
+        fio: fio,
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(10),

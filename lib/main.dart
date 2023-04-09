@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/auth/login_page.dart';
-import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/service/provider/google_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -13,7 +12,7 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

@@ -1,11 +1,15 @@
+import 'package:async/src/result/result.dart';
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/auth_service.dart';
 import 'package:famalys/pages/service/provider/vk_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:flutter_login_vk/flutter_login_vk.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service/provider/google_provider.dart';
 
@@ -21,6 +25,16 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController password = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  bool passwordHide = true;
+
+  bool _isChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserEmailPassword();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: const InputDecoration(
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
-                      hintText: 'Моб. телефон или эл. адрес',
+                      hintText: 'Эл. адрес',
                       fillColor: Color.fromRGBO(239, 242, 255, 1),
                       border: InputBorder.none,
                     ),
@@ -72,9 +86,19 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: BoxDecoration(
                       color: const Color.fromRGBO(239, 242, 255, 1),
                       borderRadius: BorderRadius.circular(25)),
-                  child: TextField(
+                  child: TextFormField(
+                    obscuringCharacter: '•',
+                    obscureText: passwordHide,
                     controller: password,
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            passwordHide = !passwordHide;
+                          });
+                        },
+                      ),
                       hintStyle: const TextStyle(
                           color: Color.fromRGBO(125, 132, 168, 1)),
                       hintText: 'Пароль',
@@ -84,13 +108,39 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: const Text('Забыли пароль?'),
-                    onPressed: () {},
-                  ),
-                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                              height: 24.0,
+                              width: 24.0,
+                              child: Theme(
+                                  data: ThemeData(
+                                      unselectedWidgetColor:
+                                          const Color.fromARGB(
+                                              255, 255, 179, 15) // Your color
+                                      ),
+                                  child: Checkbox(
+                                    activeColor:
+                                        const Color.fromARGB(255, 247, 175, 21),
+                                    value: _isChecked,
+                                    onChanged: ((value) {
+                                      _handleRemeberme(value ?? false);
+                                    }),
+                                  ))),
+                          const SizedBox(width: 10.0),
+                          const Text("Запомнить меня",
+                              style: TextStyle(
+                                  color: Colors.black, fontFamily: 'Rubic')),
+                        ],
+                      ),
+                      TextButton(
+                        child: const Text('Забыли пароль?'),
+                        onPressed: () {},
+                      ),
+                    ]),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -134,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Container(
                           alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           height: 44,
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
@@ -162,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               listen: false);
 
-                          provider.googleLogin();
+                          provider.googleLogin(context);
                         },
                         child: Image.asset('assets/google.png')),
                     TextButton(
@@ -176,14 +226,62 @@ class _LoginPageState extends State<LoginPage> {
                           ]);
 
                           if (res.isError) {
+                            print(await res);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    'Log In failed: ${res.asError!.error}'),
+                                    'Ошибка авторизации: ${res.asError!.error}'),
                               ),
                             );
                           } else {
-                            final loginResult = res.asValue!.value;
+                            VKLoginResult result = await res.asFuture;
+                            if (!result.isCanceled) {
+                              final token = await plugin.accessToken;
+                              Result<VKUserProfile?>? profileRes = token != null
+                                  ? await plugin.getUserProfile()
+                                  : null;
+
+                              VKUserProfile? profile;
+
+                              if (profileRes != null) {
+                                profile = await profileRes.asFuture;
+                              }
+
+                              if (token != null) {
+                                try {
+                                  if (profile != null) {
+                                    final email = '${profile.userId}@test.ru';
+                                    final password = profile.userId.toString();
+                                    AuthService()
+                                        .loginWithUserNameandPassword(
+                                            email, password)
+                                        .then((value) {
+                                      if (value != true) {
+                                        AuthService()
+                                            .registerUserWithEmailandPassword(
+                                                '${profile!.firstName} ${profile.lastName}',
+                                                email,
+                                                password,
+                                                profile.photo200,
+                                                '@${profile.firstName.toLowerCase()}_${profile.lastName.toLowerCase()}_${profile.userId}')
+                                            .then((value) {
+                                          if (value == true) {
+                                            nextScreen(context, HomePage());
+                                          }
+                                        });
+                                      } else {
+                                        nextScreen(context, HomePage());
+                                      }
+                                    });
+                                  }
+                                } on Exception catch (e) {
+                                  print(e);
+                                }
+                              }
+                            } else {
+                              showSnackBar(
+                                  'Авторизация отменена', context, Colors.red);
+                            }
                           }
                         },
                         child: Image.asset('assets/vk.png')),
@@ -215,5 +313,43 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _handleRemeberme(bool value) {
+    print("Handle Rember Me");
+    _isChecked = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', tel.text);
+        prefs.setString('password', password.text);
+      },
+    );
+    setState(() {
+      _isChecked = value;
+    });
+  }
+
+  void _loadUserEmailPassword() async {
+    print("Load Email");
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _email = _prefs.getString("email") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+
+      print(_remeberMe);
+      print(_email);
+      print(_password);
+      if (_remeberMe) {
+        setState(() {
+          _isChecked = true;
+        });
+        tel.text = _email ?? "";
+        password.text = _password ?? "";
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
