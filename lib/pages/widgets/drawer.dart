@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/pages/account.dart';
 import 'package:famalys/pages/service/auth_service.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,50 +45,54 @@ class _MyDrawerState extends State<MyDrawer> {
                   ListTile(
                     minLeadingWidth: 10,
                     onTap: () async {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text("Настройки"),
-                              content:
-                                  const Text("Вы уверены что хотите выйти?"),
-                              actions: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.cancel,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    await AuthService().signOut();
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginPage()),
-                                        (route) => false);
-                                  },
-                                  icon: const Icon(
-                                    Icons.done,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ],
-                            );
-                          });
+                      nextScreen(
+                          context,
+                          ProfilePage(
+                            fio: widget.fio,
+                          ));
                     },
                     leading: Image.asset(
-                      'assets/settings.png',
+                      'assets/account.png',
                       width: 24,
                       height: 24,
                       fit: BoxFit.cover,
                     ),
                     title: const Text(
-                      "Настройки",
+                      "Аккаунт",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    minLeadingWidth: 10,
+                    onTap: () async {},
+                    leading: Image.asset(
+                      'assets/notifications.png',
+                      width: 21,
+                      height: 21,
+                      fit: BoxFit.cover,
+                    ),
+                    title: const Text(
+                      "Уведомления",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    minLeadingWidth: 10,
+                    onTap: () async {},
+                    leading: Image.asset(
+                      'assets/lock.png',
+                      width: 22,
+                      height: 22,
+                      fit: BoxFit.cover,
+                    ),
+                    title: const Text(
+                      "Безопасность",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -117,7 +122,13 @@ class _MyDrawerState extends State<MyDrawer> {
               Align(
                   widthFactor: 100,
                   alignment: Alignment.centerLeft,
-                  child: Text('© «Families», 2023'))
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      '© «Families», 2023',
+                      style: HelperFunctions.pGrey,
+                    ),
+                  ))
             ]),
       ),
     );

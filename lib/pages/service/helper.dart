@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/login_page.dart';
+import 'auth_service.dart';
+
 class HelperFunctions {
   //keys
   static String userIdKey = "USERKEY";
@@ -13,7 +16,9 @@ class HelperFunctions {
   static String userProfilePicKey = "USERPROFILEPICKEY";
 
   static TextStyle h1 = const TextStyle(
-      color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500);
+      color: Color.fromRGBO(125, 132, 168, 1),
+      fontSize: 20,
+      fontWeight: FontWeight.w500);
 
   static TextStyle pGrey = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
@@ -78,6 +83,41 @@ class HelperFunctions {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userProfilePicKey);
   }
+}
+
+void goOutApp(BuildContext context) {
+  showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Аккаунт"),
+          content: const Text("Вы уверены что хотите выйти?"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.cancel,
+                color: Colors.red,
+              ),
+            ),
+            IconButton(
+              onPressed: () async {
+                await AuthService().signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    (route) => false);
+              },
+              icon: const Icon(
+                Icons.done,
+                color: Colors.green,
+              ),
+            ),
+          ],
+        );
+      });
 }
 
 void nextScreen(context, page) {

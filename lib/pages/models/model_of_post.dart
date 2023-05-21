@@ -18,7 +18,7 @@ topOfPost(String nickName, String imageUrl, String fio) {
         borderRadius: BorderRadius.circular(100),
         child: Image.network(imageUrl),
       ),
-      SizedBox(
+      const SizedBox(
         width: 20,
       ),
       Column(
