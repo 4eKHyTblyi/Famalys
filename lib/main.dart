@@ -1,5 +1,6 @@
 import 'package:famalys/pages/auth/login_page.dart';
 import 'package:famalys/pages/home_page.dart';
+import 'package:famalys/pages/service/auth_service.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/service/provider/google_provider.dart';
 import 'package:firebase_core/firebase_core.dart';

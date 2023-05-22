@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/account.dart';
+import 'package:famalys/pages/notifications.dart';
 import 'package:famalys/pages/service/auth_service.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,7 +68,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   ListTile(
                     minLeadingWidth: 10,
-                    onTap: () async {},
+                    onTap: () async {
+                      nextScreen(context, NotificationsPage());
+                    },
                     leading: Image.asset(
                       'assets/notifications.png',
                       width: 21,

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/pages/messages.dart';
+import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
 import 'package:famalys/pages/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,7 +72,10 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {}, icon: Image.asset('assets/msg_icons.png'))
+              onPressed: () {
+                nextScreen(context, ListMessages());
+              },
+              icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
       drawer: MyDrawer(
