@@ -1,12 +1,13 @@
-import 'package:famalys/pages/auth/login_page.dart';
-import 'package:famalys/pages/home_page.dart';
-import 'package:famalys/pages/service/auth_service.dart';
-import 'package:famalys/pages/service/helper.dart';
-import 'package:famalys/pages/service/provider/google_provider.dart';
+import 'pages/auth/login_page.dart';
+import 'pages/home_page.dart';
+import 'pages/service/auth_service.dart';
+import 'pages/service/helper.dart';
+import 'pages/service/provider/google_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:figma_to_flutter/figma_to_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
