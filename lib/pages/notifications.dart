@@ -45,29 +45,47 @@ class _NotificationsPageState extends State<NotificationsPage> {
             "Уведомления",
             style: HelperFunctions.h1,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: GFCheckbox(
-                type: GFCheckboxType.custom,
-                activeBgColor: GFColors.SECONDARY,
-                onChanged: (value) {
-                  setState(() {
-                    one = value;
-                  });
-                },
-                value: one),
-          ),
-          Checkbox(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              value: one,
-              onChanged: (value) {
-                setState(() {
-                  one = value ?? false;
-                });
-              })
+          CustomCheckbox(one)
         ]),
       ),
     );
   }
+}
+
+CustomCheckbox(bool check) {
+  return TextButton(
+    onPressed: () {
+      check != check;
+      print(1);
+    },
+    style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ),
+        splashFactory: NoSplash.splashFactory),
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 2,
+          color: const Color.fromRGBO(212, 220, 254, 1),
+        ),
+        borderRadius: BorderRadius.circular(100),
+      ),
+      padding: const EdgeInsets.all(3),
+      child: Container(
+        width: 15,
+        height: 15,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            gradient: check
+                ? const LinearGradient(colors: [
+                    Color.fromRGBO(255, 166, 182, 1),
+                    Color.fromRGBO(255, 232, 172, 1),
+                  ])
+                : LinearGradient(colors: [Colors.white, Colors.white])),
+      ),
+    ),
+  );
 }
