@@ -1,4 +1,5 @@
 import 'package:async/src/result/result.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/auth_service.dart';
@@ -164,7 +165,6 @@ class _LoginPageState extends State<LoginPage> {
                                         Colors.green);
                                     nextScreen(context, const HomePage());
                                   } else {
-                                    print(password.text);
                                     if (value != null) {
                                       showSnackBar(value, context, Colors.red);
                                     }
@@ -226,7 +226,6 @@ class _LoginPageState extends State<LoginPage> {
                           ]);
 
                           if (res.isError) {
-                            print(await res);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(

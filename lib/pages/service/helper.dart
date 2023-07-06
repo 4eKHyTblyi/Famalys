@@ -25,6 +25,9 @@ class HelperFunctions {
       fontSize: 14,
       fontWeight: FontWeight.w400);
 
+  static TextStyle pBlack = const TextStyle(
+      color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400);
+
   // saving the data to SF
 
   static Future<bool> saveUserLoggedInStatus(bool isUserLoggedIn) async {
