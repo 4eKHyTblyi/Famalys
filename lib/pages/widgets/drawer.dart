@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/account.dart';
 import 'package:famalys/pages/notifications.dart';
+import 'package:famalys/pages/security.dart';
 import 'package:famalys/pages/service/auth_service.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,7 +88,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   ListTile(
                     minLeadingWidth: 10,
-                    onTap: () async {},
+                    onTap: () async {
+                      nextScreen(context, SecurityPage());
+                    },
                     leading: Image.asset(
                       'assets/lock.png',
                       width: 22,

@@ -21,19 +21,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
   String myId = "";
   CollectionReference notifications_coll =
       FirebaseFirestore.instance.collection('users');
-  user() {
+  user() async {
     myId = myUser!.uid;
     notifications_coll =
         notifications_coll.doc(myId).collection('notifications');
   }
 
   List<Notification> notifications = [
-    Notification("Включить звук уведомлений", true),
-    Notification("Чаты", true),
-    Notification("Мессенджер", true),
-    Notification("Новые публикации", true),
-    Notification("Ответы и комментарии", true),
-    Notification("Реакции", true),
+    Notification("Включить звук уведомлений", true, "switch"),
+    Notification("Чаты", true, "chats"),
+    Notification("Мессенджер", true, "messenger"),
+    Notification("Новые публикации", true, "new_publication"),
+    Notification("Ответы и комментарии", true, "comments"),
+    Notification("Реакции", true, "reactions"),
   ];
 
   @override
@@ -63,7 +63,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             "Уведомления",
@@ -76,41 +76,55 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 if (snapshot.data != null) {
                   if (snapshot.data!.size == 0) {
                     for (int i = 0; i < notifications.length; i++) {
-                      notifications_coll.add({
+                      notifications_coll.doc(notifications[i].id).set({
                         'name': notifications[i].name,
-                        'check': notifications[i].check
+                        'check': notifications[i].check,
                       });
                     }
 
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else {
+                    getCheckStatus();
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        notificationCard(notifications[0].name,
+                            notifications[0].check, notifications[0].id),
                         Text(
                           "Категории уведомлений",
                           style: HelperFunctions.pGrey,
                         ),
-                        SizedBox(
-                            height: 400,
-                            child: ListView.builder(
-                                itemCount: snapshot.data!.size,
-                                itemBuilder: (context, index) {
-                                  return notificationCard(
-                                      snapshot.data!.docs[index]['name'],
-                                      snapshot.data!.docs[index]['check'],
-                                      snapshot.data!.docs[index].id);
-                                })),
+                        notificationCard(notifications[1].name,
+                            notifications[1].check, notifications[1].id),
+                        notificationCard(notifications[2].name,
+                            notifications[2].check, notifications[2].id),
+                        notificationCard(notifications[3].name,
+                            notifications[3].check, notifications[3].id),
+                        notificationCard(notifications[4].name,
+                            notifications[4].check, notifications[4].id),
+                        notificationCard(notifications[5].name,
+                            notifications[5].check, notifications[5].id),
                       ],
                     );
                   }
                 } else {
-                  return Text('error');
+                  return const Text('error');
                 }
               })
         ]),
       ),
     );
+  }
+
+  getCheckStatus() {
+    for (int i = 0; i < notifications.length; i++) {
+      notifications_coll.doc(notifications[i].id).get().then(
+        (DocumentSnapshot documentSnapshot) {
+          notifications[i].check = documentSnapshot.get('check');
+        },
+      );
+    }
+    print("update");
   }
 
   notificationCard(name, check, [id]) {
@@ -164,7 +178,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       Color.fromRGBO(255, 166, 182, 1),
                       Color.fromRGBO(255, 232, 172, 1),
                     ])
-                  : LinearGradient(colors: [Colors.white, Colors.white])),
+                  : const LinearGradient(colors: [Colors.white, Colors.white])),
         ),
       ),
     );
@@ -174,9 +188,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
 class Notification {
   String name = "";
   bool check = true;
+  String id = "";
 
-  Notification(name, check) {
+  Notification(name, check, id) {
     this.name = name;
     this.check = check;
+    this.id = id;
   }
 }

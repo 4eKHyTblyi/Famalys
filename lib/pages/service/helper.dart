@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/login_page.dart';
@@ -15,9 +16,15 @@ class HelperFunctions {
   static String displayNameKey = "USERDISPLAYNAMEKEY";
   static String userProfilePicKey = "USERPROFILEPICKEY";
 
+//Styles
   static TextStyle h1 = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
       fontSize: 20,
+      fontWeight: FontWeight.w500);
+
+  static TextStyle h2 = const TextStyle(
+      color: Color.fromRGBO(125, 132, 168, 1),
+      fontSize: 16,
       fontWeight: FontWeight.w500);
 
   static TextStyle pGrey = const TextStyle(
@@ -27,6 +34,50 @@ class HelperFunctions {
 
   static TextStyle pBlack = const TextStyle(
       color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400);
+
+  static EdgeInsets paddingH15V10 =
+      const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
+
+  static Widget passwordInput(String label, bool hide, BuildContext context) {
+    TextEditingController? password;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: HelperFunctions.pGrey,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+              color: const Color.fromRGBO(239, 242, 255, 1),
+              borderRadius: BorderRadius.circular(25)),
+          child: TextFormField(
+            obscuringCharacter: '*',
+            obscureText: hide,
+            controller: password,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.visibility),
+                onPressed: () {
+                  hide != hide;
+                },
+              ),
+              hintStyle:
+                  const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
+              hintText: 'Пароль',
+              fillColor: const Color.fromRGBO(239, 242, 255, 1),
+              border: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0)),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   // saving the data to SF
 
