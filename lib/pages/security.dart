@@ -10,6 +10,8 @@ class SecurityPage extends StatefulWidget {
 }
 
 class _SecurityPageState extends State<SecurityPage> {
+  bool view = false;
+  bool view2 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +52,21 @@ class _SecurityPageState extends State<SecurityPage> {
                 "Сменить пароль",
                 style: HelperFunctions.h2,
               ),
-              HelperFunctions.passwordInput("Новый пароль", true, context)
+              HelperFunctions.passwordInput("Новый пароль", view, context),
+              HelperFunctions.passwordInput(
+                  "Новый пароль (повторите)", view2, context),
+              ElevatedButton(
+                  onPressed: () {},
+                  clipBehavior: Clip.antiAlias,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25)),
+                  ),
+                  child: HelperFunctions.buttonTemplate(
+                      context, "Сохранить изменения"))
             ]),
       ),
     );

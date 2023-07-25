@@ -124,14 +124,23 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 10,
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
+              HelperFunctions.news("name", "nickName", context)
             ],
           ),
         ),
       ),
     );
+  }
+
+  listOfNews() {
+    return ListView.builder(
+        itemCount: 1,
+        itemBuilder: (BuildContext context, int index) {
+          return HelperFunctions.news("name", "nickName", context);
+        });
   }
 
   lentaNovostey() {
