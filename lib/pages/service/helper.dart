@@ -43,6 +43,27 @@ class HelperFunctions {
   static EdgeInsets paddingH15V10 =
       const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
 
+  static Widget inputTemplate(
+      String label, String hintText, BuildContext context) {
+    TextEditingController? password;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+          color: const Color.fromRGBO(239, 242, 255, 1),
+          borderRadius: BorderRadius.circular(25)),
+      child: TextFormField(
+        controller: password,
+        decoration: InputDecoration(
+          hintStyle: const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
+          hintText: hintText,
+          fillColor: const Color.fromRGBO(239, 242, 255, 1),
+          border:
+              UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+        ),
+      ),
+    );
+  }
+
   static Widget passwordInput(String label, bool hide, BuildContext context) {
     TextEditingController? password;
     return Column(
@@ -122,77 +143,111 @@ class HelperFunctions {
 
   //NEWS AND POST
 
-  static Widget news(String name, String nickName, BuildContext context) {
+  static Widget news(
+    String name,
+    String nickName,
+    BuildContext context,
+  ) {
     bool haveProfilePhoto = false;
+    bool maxLinesMore = false;
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //PROFILE
-          Row(
-            children: [
-              haveProfilePhoto
-                  ? Image(image: NetworkImage(""))
-                  : SizedBox(
-                      width: 35,
-                      height: 35,
-                      child: Image.asset("assets/profile.png")),
-              const SizedBox(
-                width: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    nickName,
-                    style: pBlack,
-                  ),
-                  Text(
-                    name,
-                    style: pGrey,
-                  ),
-                ],
-              )
-            ],
-          ),
-
-          //CONTENT
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 400,
-              child: Image.asset(
-                "assets/profile.png",
-                fit: BoxFit.cover,
-              )),
-
-          //DATETIME & BUTTONS
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              datetimeFormat(DateTime.now()),
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: ImageIcon(AssetImage("assets/news/icons.png"))),
-                  IconButton(
-                      onPressed: () {},
-                      icon: ImageIcon(AssetImage("assets/news/like- 2.png"))),
-                ],
-              )
-            ],
-          ),
-
-          //TEXT CONTENT
-          Expanded(
-            child: const Text(
-              "Lorem ipsum dolor sit amet consectetur. Vitae faucibus at scelerisque nibh quis. Nunc venenatis nam pellentesque magna nunc dolor etiam. Neque mauris diam ridiculus laoreet volutpat et cursus. Est gravida semper sagittis posuere tellus amet sed feugiat. Enim lectus scelerisque nunc viverra auctor et sapien. Tellus eget sed lacinia imperdiet suspendisse dolor sagittis neque. Amet vel justo neque massa enim viverra malesuada feugiat. Leo elementum lacus eget nec eget sed nisl. Turpis pretium nullam hac dolor amet accumsan dictum nulla gravida. Malesuada integer tincidunt malesuada metus. Neque nisi enim adipiscing ac est. Adipiscing tellus id risus mattis pretium amet varius cursus. Lacus id et ridiculus adipiscing sagittis. Lacus turpis mi sit imperdiet in accumsan bibendum faucibus auctor.",
-              overflow: TextOverflow.ellipsis,
+      height: 800,
+      constraints: BoxConstraints(maxHeight: 1000),
+      child: Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //PROFILE
+            Row(
+              children: [
+                haveProfilePhoto
+                    ? Image(image: NetworkImage(""))
+                    : SizedBox(
+                        width: 35,
+                        height: 35,
+                        child: Image.asset("assets/profile.png")),
+                const SizedBox(
+                  width: 15,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      nickName,
+                      style: pBlack,
+                    ),
+                    Text(
+                      name,
+                      style: pGrey,
+                    ),
+                  ],
+                )
+              ],
             ),
-          )
-        ],
+
+            //CONTENT
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 400,
+                child: Image.asset(
+                  "assets/logo2 2.png",
+                  fit: BoxFit.scaleDown,
+                )),
+
+            //DATETIME & BUTTONS
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                datetimeFormat(DateTime.now()),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: ImageIcon(AssetImage("assets/news/icons.png"))),
+                    IconButton(
+                        onPressed: () {},
+                        icon: ImageIcon(AssetImage("assets/news/like- 2.png"))),
+                  ],
+                )
+              ],
+            ),
+
+            //TEXT CONTENT
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Lorem ipsum dolor sit amet consectetur. Vitae faucibus at scelerisque nibh quis. Nunc venenatis nam pellentesque magna nunc dolor etiam. Neque mauris diam ridiculus laoreet volutpat et cursus. Est gravida semper sagittis posuere tellus amet sed feugiat. Enim lectus scelerisque nunc viverra auctor et sapien. Tellus eget sed lacinia imperdiet suspendisse dolor sagittis neque. Amet vel justo neque massa enim viverra malesuada feugiat. Leo elementum lacus eget nec eget sed nisl. Turpis pretium nullam hac dolor amet accumsan dictum nulla gravida. Malesuada integer tincidunt malesuada metus. Neque nisi enim adipiscing ac est. Adipiscing tellus id risus mattis pretium amet varius cursus. Lacus id et ridiculus adipiscing sagittis. Lacus turpis mi sit imperdiet in accumsan bibendum faucibus auctor.",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+                TextButton(
+                    onPressed: () {
+                      maxLinesMore != maxLinesMore;
+                    },
+                    child: Text("Читать дальше..."))
+              ],
+            ),
+
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {},
+                    icon: ImageIcon(AssetImage("assets/icons.png"))),
+                SizedBox(
+                  width: 200,
+                  child: inputTemplate("", "Ваш комментарий...", context),
+                ),
+                IconButton(
+                    onPressed: () {},
+                    icon: ImageIcon(AssetImage("assets/msg_icons.png"))),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
