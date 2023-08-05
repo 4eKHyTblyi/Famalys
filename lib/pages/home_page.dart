@@ -3,6 +3,7 @@ import 'package:famalys/pages/messages.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
 import 'package:famalys/pages/widgets/drawer.dart';
+import 'package:famalys/pages/widgets/new.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +128,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              HelperFunctions.news("name", "nickName", context)
+              NewPost(
+                  name: "name",
+                  userName: "userName",
+                  photoUrl: "",
+                  userId: "userId",
+                  postId: "postId")
             ],
           ),
         ),
@@ -139,7 +145,12 @@ class _HomePageState extends State<HomePage> {
     return ListView.builder(
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
-          return HelperFunctions.news("name", "nickName", context);
+          return NewPost(
+              name: "name",
+              userName: "userName",
+              photoUrl: "",
+              userId: "userId",
+              postId: "postId");
         });
   }
 
