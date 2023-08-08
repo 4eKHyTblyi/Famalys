@@ -1,4 +1,5 @@
 import 'package:famalys/pages/service/helper.dart';
+import 'package:famalys/pages/widgets/comments.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -116,6 +117,20 @@ class _NewPostState extends State<NewPost> {
                       : const Text("Читать дальше..."))
             ],
           ),
+
+          TextButton(
+              onPressed: () {
+                nextScreen(
+                    context,
+                    Comments(comments: [
+                      CommentTemplate("name", "userName", "", "textOfComment",
+                          1, 2, "08:10")
+                    ]));
+              },
+              child: Text(
+                "Показать комментарии",
+                style: HelperFunctions.pGrey,
+              )),
 
           Row(
             children: [

@@ -54,12 +54,10 @@ class HelperFunctions {
       child: TextFormField(
         controller: password,
         decoration: InputDecoration(
-          hintStyle: const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
-          hintText: hintText,
-          fillColor: const Color.fromRGBO(239, 242, 255, 1),
-          border:
-              UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-        ),
+            hintStyle: const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
+            hintText: hintText,
+            fillColor: const Color.fromRGBO(239, 242, 255, 1),
+            border: InputBorder.none),
       ),
     );
   }
@@ -96,8 +94,7 @@ class HelperFunctions {
                   const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
               hintText: 'Пароль',
               fillColor: const Color.fromRGBO(239, 242, 255, 1),
-              border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0)),
+              border: InputBorder.none,
             ),
           ),
         )
