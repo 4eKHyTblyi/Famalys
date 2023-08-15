@@ -3,6 +3,7 @@ import 'package:famalys/pages/messages.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
 import 'package:famalys/pages/widgets/drawer.dart';
+import 'package:famalys/pages/widgets/histories.dart';
 import 'package:famalys/pages/widgets/new.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,22 +20,6 @@ class _HomePageState extends State<HomePage> {
     Scaffold.of(context).openDrawer();
   }
 
-  final kInnerDecoration = BoxDecoration(
-    color: Colors.white,
-    border: Border.all(color: Colors.white),
-    borderRadius: BorderRadius.circular(100),
-  );
-
-  final kGradientBoxDecoration = BoxDecoration(
-    gradient: const LinearGradient(colors: [
-      Color.fromRGBO(255, 166, 182, 1),
-      Color.fromRGBO(255, 232, 172, 1),
-      Color.fromRGBO(193, 237, 152, 1),
-      Color.fromRGBO(166, 228, 255, 1),
-    ]),
-    borderRadius: BorderRadius.circular(100),
-  );
-
   String fio = '';
 
   getFio() async {
@@ -48,6 +33,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  var list = FirebaseFirestore.instance
+      .collection('histories')
+      .withConverter<HistoryTemplate>(
+          fromFirestore: (snapshots, _) =>
+              HistoryTemplate.fromJson(snapshots.data()!),
+          toFirestore: (history, _) => history.toJson());
+
   @override
   void initState() {
     super.initState();
@@ -57,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: MyBottomNavBar(),
+      bottomNavigationBar: const MyBottomNavBar(),
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
@@ -74,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                nextScreen(context, ListMessages());
+                nextScreen(context, const ListMessages());
               },
               icon: Image.asset('assets/msg_icons.png'))
         ],
@@ -83,59 +75,40 @@ class _HomePageState extends State<HomePage> {
         fio: fio,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-          child: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: SizedBox(
+                height: 65,
+                child: Histories(histories: list),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+              child: Column(
                 children: [
-                  Container(
-                    decoration: kGradientBoxDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        decoration: kInnerDecoration,
-                        child: Container(
-                          child: Center(child: Icon(Icons.add)),
-                          margin: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(100)),
-                          height: 55,
-                          width: 55,
-                        ),
+                  const Row(
+                    children: [
+                      VerticalDivider(
+                        width: 5,
+                        thickness: 5,
+                        indent: 20,
+                        endIndent: 0,
+                        color: Colors.black,
                       ),
-                    ),
+                    ],
                   ),
-                  const VerticalDivider(
-                    width: 5,
-                    thickness: 5,
-                    indent: 20,
-                    endIndent: 0,
-                    color: Colors.black,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 65,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return lentaNovostey();
-                        },
-                        itemCount: 10,
-                      ),
-                    ),
-                  ),
+                  NewPost(
+                      name: "name",
+                      userName: "userName",
+                      photoUrl: "",
+                      userId: "userId",
+                      postId: "postId")
                 ],
               ),
-              NewPost(
-                  name: "name",
-                  userName: "userName",
-                  photoUrl: "",
-                  userId: "userId",
-                  postId: "postId")
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -152,32 +125,5 @@ class _HomePageState extends State<HomePage> {
               userId: "userId",
               postId: "postId");
         });
-  }
-
-  lentaNovostey() {
-    return Row(
-      children: [
-        Container(
-          decoration: kGradientBoxDecoration,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Container(
-              decoration: kInnerDecoration,
-              child: Container(
-                margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(100)),
-                height: 55,
-                width: 55,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 10,
-        )
-      ],
-    );
   }
 }

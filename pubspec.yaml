@@ -43,6 +43,7 @@ dependencies:
   curved_navigation_bar:
   convex_bottom_bar:
   flutter_translate:
+  flutter_instagram_stories: 
   getwidget: ^2.0.4
 
 

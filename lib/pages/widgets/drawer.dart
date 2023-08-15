@@ -123,6 +123,27 @@ class _MyDrawerState extends State<MyDrawer> {
                           fontWeight: FontWeight.w400),
                     ),
                   ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.67,
+                    height: 50,
+                    decoration: HelperFunctions().kGradientBoxDecoration,
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        decoration: HelperFunctions().kInnerDecoration,
+                        child: TextButton(
+                          onPressed: () {
+                            AuthService().signOut();
+                            nextScreen(context, LoginPage());
+                          },
+                          child: Text(
+                            "Выйти из аккаунта",
+                            style: HelperFunctions.pBlack,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
               Align(

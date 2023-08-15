@@ -62,6 +62,22 @@ class HelperFunctions {
     );
   }
 
+  final kInnerDecoration = BoxDecoration(
+    color: Colors.white,
+    border: Border.all(color: Colors.white),
+    borderRadius: BorderRadius.circular(100),
+  );
+
+  final kGradientBoxDecoration = BoxDecoration(
+    gradient: const LinearGradient(colors: [
+      Color.fromRGBO(255, 166, 182, 1),
+      Color.fromRGBO(255, 232, 172, 1),
+      Color.fromRGBO(193, 237, 152, 1),
+      Color.fromRGBO(166, 228, 255, 1),
+    ]),
+    borderRadius: BorderRadius.circular(100),
+  );
+
   static Widget passwordInput(String label, bool hide, BuildContext context) {
     TextEditingController? password;
     return Column(
