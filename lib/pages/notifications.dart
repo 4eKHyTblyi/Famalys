@@ -27,18 +27,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
         notifications_coll.doc(myId).collection('notifications');
   }
 
-  List<Notification> notifications = [
-    Notification("Включить звук уведомлений", true, "switch"),
-    Notification("Чаты", true, "chats"),
-    Notification("Мессенджер", true, "messenger"),
-    Notification("Новые публикации", true, "new_publication"),
-    Notification("Ответы и комментарии", true, "comments"),
-    Notification("Реакции", true, "reactions"),
-  ];
-
   @override
   Widget build(BuildContext context) {
     user();
+    var _switch = notifications_coll.doc('switch').snapshots();
+    var _chats = notifications_coll.doc('chats').snapshots();
+    var _messenger = notifications_coll.doc('messenger').snapshots();
+    var _new_publication =
+        notifications_coll.doc('new_publication').snapshots();
+    var _comments = notifications_coll.doc('comments').snapshots();
+    var _reactions = notifications_coll.doc('reactions').snapshots();
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -70,61 +68,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
             style: HelperFunctions.h1,
           ),
           StreamBuilder(
-              stream: notifications_coll.snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.data != null) {
-                  if (snapshot.data!.size == 0) {
-                    for (int i = 0; i < notifications.length; i++) {
-                      notifications_coll.doc(notifications[i].id).set({
-                        'name': notifications[i].name,
-                        'check': notifications[i].check,
-                      });
-                    }
-
-                    return const CircularProgressIndicator();
-                  } else {
-                    getCheckStatus();
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        notificationCard(notifications[0].name,
-                            notifications[0].check, notifications[0].id),
-                        Text(
-                          "Категории уведомлений",
-                          style: HelperFunctions.pGrey,
-                        ),
-                        notificationCard(notifications[1].name,
-                            notifications[1].check, notifications[1].id),
-                        notificationCard(notifications[2].name,
-                            notifications[2].check, notifications[2].id),
-                        notificationCard(notifications[3].name,
-                            notifications[3].check, notifications[3].id),
-                        notificationCard(notifications[4].name,
-                            notifications[4].check, notifications[4].id),
-                        notificationCard(notifications[5].name,
-                            notifications[5].check, notifications[5].id),
-                      ],
-                    );
-                  }
-                } else {
-                  return const Text('error');
-                }
-              })
+              stream: _switch,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                print(snapshot.data('name'));
+                return Text('data');
+                //notificationCard(
+                //snapshot.data['name'], snapshot.data['check']);
+              }),
         ]),
       ),
     );
-  }
-
-  getCheckStatus() {
-    for (int i = 0; i < notifications.length; i++) {
-      notifications_coll.doc(notifications[i].id).get().then(
-        (DocumentSnapshot documentSnapshot) {
-          notifications[i].check = documentSnapshot.get('check');
-        },
-      );
-    }
-    print("update");
   }
 
   notificationCard(name, check, [id]) {
@@ -140,17 +93,18 @@ class _NotificationsPageState extends State<NotificationsPage> {
   customCheckbox(bool check, [id]) {
     bool ok = check;
     return TextButton(
-      onPressed: () {
+      onPressed: () async {
         setState(() {
           ok = !ok;
-
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(myId)
-              .collection('notifications')
-              .doc(id)
-              .update({'check': ok});
         });
+        print(ok);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(myId)
+            .collection('notifications')
+            .doc(id)
+            .update({'check': ok});
       },
       style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
