@@ -21,7 +21,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   String myId = "";
   CollectionReference notifications_coll =
       FirebaseFirestore.instance.collection('users');
-  user() async {
+  user() {
     myId = myUser!.uid;
     notifications_coll =
         notifications_coll.doc(myId).collection('notifications');
@@ -68,10 +68,17 @@ class _NotificationsPageState extends State<NotificationsPage> {
             style: HelperFunctions.h1,
           ),
           StreamBuilder(
-              stream: _switch,
+              stream: notifications_coll.doc('switch').snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
-                print(snapshot.data('name'));
-                return Text('data');
+                if (snapshot.hasData) {
+                  print(snapshot.data["check"]);
+                  return notificationCard(
+                      snapshot.data["name"], snapshot.data["check"], "switch");
+                } else {
+                  print(_switch.isEmpty);
+                  return Text('data');
+                }
+
                 //notificationCard(
                 //snapshot.data['name'], snapshot.data['check']);
               }),
