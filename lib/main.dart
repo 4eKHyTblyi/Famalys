@@ -1,3 +1,6 @@
+import 'package:famalys/global/global_vars.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'pages/auth/login_page.dart';
 import 'pages/home_page.dart';
 import 'pages/service/auth_service.dart';
@@ -14,7 +17,18 @@ void main() async {
 
   await Firebase.initializeApp();
 
+  sharedPreferences = await SharedPreferences.getInstance();
+
   runApp(MyApp());
+}
+
+void initNotifications(SharedPreferences sf) {
+  SWITCH = sf.getBool("SWITCH")!;
+  MESSENGER = sf.getBool("MESSENGER")!;
+  COMMENTS = sf.getBool("COMMENTS")!;
+  PUBLICATION = sf.getBool("PUBLICATION")!;
+  CHATS = sf.getBool("CHATS")!;
+  REACTIONS = sf.getBool("REACTIONS")!;
 }
 
 class MyApp extends StatefulWidget {

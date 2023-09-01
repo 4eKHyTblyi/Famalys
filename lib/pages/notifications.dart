@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/colors/gf_color.dart';
-import 'package:getwidget/components/checkbox/gf_checkbox.dart';
-import 'package:getwidget/types/gf_checkbox_type.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -16,6 +13,13 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends State<NotificationsPage> {
   bool one = true;
+
+  bool LOCAL_SWITCH = true;
+  bool LOCAL_COMMENTS = true;
+  bool LOCAL_REACTIONS = true;
+  bool LOCAL_PUBLICATION = true;
+  bool LOCAL_CHATS = true;
+  bool LOCAL_MESSENGER = true;
 
   var myUser = FirebaseAuth.instance.currentUser;
   String myId = "";
@@ -28,15 +32,21 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (sharedPreferences?.getBool("SWITCH") != null) {
+      LOCAL_SWITCH = sharedPreferences!.getBool("SWITCH")!;
+      LOCAL_COMMENTS = sharedPreferences!.getBool("COMMENTS")!;
+      LOCAL_REACTIONS = sharedPreferences!.getBool("REACTIONS")!;
+      LOCAL_PUBLICATION = sharedPreferences!.getBool("PUBLICATION")!;
+      LOCAL_CHATS = sharedPreferences!.getBool("CHATS")!;
+      LOCAL_MESSENGER = sharedPreferences!.getBool("MESSENGER")!;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     user();
-    var _switch = notifications_coll.doc('switch').snapshots();
-    var _chats = notifications_coll.doc('chats').snapshots();
-    var _messenger = notifications_coll.doc('messenger').snapshots();
-    var _new_publication =
-        notifications_coll.doc('new_publication').snapshots();
-    var _comments = notifications_coll.doc('comments').snapshots();
-    var _reactions = notifications_coll.doc('reactions').snapshots();
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -57,7 +67,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
               )
             ],
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            sharedPreferences!.setBool("SWITCH", LOCAL_SWITCH);
+            sharedPreferences!.setBool("COMMENTS", LOCAL_COMMENTS);
+            sharedPreferences!.setBool("REACTIONS", LOCAL_REACTIONS);
+            sharedPreferences!.setBool("PUBLICATION", LOCAL_PUBLICATION);
+            sharedPreferences!.setBool("CHATS", LOCAL_CHATS);
+            sharedPreferences!.setBool("MESSENGER", LOCAL_MESSENGER);
+            Navigator.of(context).pop();
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -67,21 +85,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
             "Уведомления",
             style: HelperFunctions.h1,
           ),
-          StreamBuilder(
-              stream: notifications_coll.doc('switch').snapshots(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data["check"]);
-                  return notificationCard(
-                      snapshot.data["name"], snapshot.data["check"], "switch");
-                } else {
-                  print(_switch.isEmpty);
-                  return Text('data');
-                }
-
-                //notificationCard(
-                //snapshot.data['name'], snapshot.data['check']);
-              }),
+          notificationCard("Включить звук уведомлений", LOCAL_SWITCH, "SWITCH"),
+          notificationCard(
+              "Включить звук уведомлений", LOCAL_COMMENTS, "COMMENTS"),
+          notificationCard(
+              "Включить звук уведомлений", LOCAL_REACTIONS, "REACTIONS"),
+          notificationCard(
+              "Включить звук уведомлений", LOCAL_PUBLICATION, "PUBLICATION"),
+          notificationCard("Включить звук уведомлений", LOCAL_CHATS, "CHATS"),
+          notificationCard(
+              "Включить звук уведомлений", LOCAL_MESSENGER, "MESSENGER"),
         ]),
       ),
     );
@@ -102,16 +115,22 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return TextButton(
       onPressed: () async {
         setState(() {
-          ok = !ok;
+          switch (id) {
+            case "SWITCH":
+              LOCAL_SWITCH = !ok;
+            case "COMMENTS":
+              LOCAL_COMMENTS = !ok;
+            case "REACTIONS":
+              LOCAL_REACTIONS = !ok;
+            case "PUBLICATION":
+              LOCAL_PUBLICATION = !ok;
+            case "CHATS":
+              LOCAL_CHATS = !ok;
+            case "MESSENGER":
+              LOCAL_MESSENGER = !ok;
+          }
         });
-        print(ok);
-
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(myId)
-            .collection('notifications')
-            .doc(id)
-            .update({'check': ok});
+        print(check);
       },
       style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
