@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:famalys/pages/home_page.dart';
+import 'package:famalys/pages/intaractive_page.dart';
+import 'package:famalys/pages/new_publication.dart';
+import 'package:famalys/pages/profile_page.dart';
+import 'package:famalys/pages/search_page.dart';
+import 'package:famalys/pages/service/helper.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomNavBar extends StatefulWidget {
@@ -15,6 +22,14 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
   Map<int, dynamic> listOfBadges = {};
   int index = 4;
   late TabController tabController;
+
+  List page_list = [
+    HomePage(),
+    SearchPage(),
+    NewPublicationPage(),
+    ProfilePage(),
+    IntaractivePage()
+  ];
 
   @override
   void initState() {
@@ -37,6 +52,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
           _index = index;
         });
         _index = index;
+        nextScreenReplace(context, page_list[index]);
       },
       itemBuilder: _Builder(),
       backgroundColor: const Color.fromRGBO(239, 242, 255, 1),

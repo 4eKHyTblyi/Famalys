@@ -16,10 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  showDrawer(context) {
-    Scaffold.of(context).openDrawer();
-  }
-
   String fio = '';
 
   getFio() async {

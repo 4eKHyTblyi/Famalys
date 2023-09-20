@@ -1,3 +1,4 @@
+import 'package:famalys/pages/widgets/message_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,9 @@ class HelperFunctions {
       color: Color.fromRGBO(125, 132, 168, 1),
       fontSize: 20,
       fontWeight: FontWeight.w500);
+
+  static TextStyle h1Black = const TextStyle(
+      color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500);
 
   static TextStyle h2 = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
@@ -118,6 +122,16 @@ class HelperFunctions {
     );
   }
 
+  static Widget buttomImageTemplate(
+      Image image, BuildContext context, Function onPressed) {
+    return IconButton(
+        splashRadius: 25,
+        onPressed: () {
+          onPressed;
+        },
+        icon: image);
+  }
+
   static Widget buttonTemplate(BuildContext context, String text) {
     return Container(
       alignment: Alignment.center,
@@ -212,6 +226,35 @@ class HelperFunctions {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userProfilePicKey);
   }
+
+  static Widget searchInput(BuildContext context, double width) {
+    return Row(
+      children: [
+        SizedBox(
+            width: width,
+            child: HelperFunctions.inputTemplate("label", "Поиск", context)),
+        HelperFunctions.buttomImageTemplate(
+            Image.asset('assets/search.png'), context, () {
+          print(1);
+        })
+      ],
+    );
+  }
+
+  static Widget tab(String text) {
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Text(
+        text,
+        style: pGrey16,
+      ),
+    );
+  }
 }
 
 void goOutApp(BuildContext context) {
@@ -265,6 +308,10 @@ void showSnackBar(String value, BuildContext context, Color color) {
   ));
 }
 
+showDrawer(context) {
+  Scaffold.of(context).openDrawer();
+}
+
 Route createRoute(Widget Function() createPage) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => createPage(),
@@ -282,3 +329,5 @@ Route createRoute(Widget Function() createPage) {
     },
   );
 }
+
+// MESSAGES TEMPLATE 

@@ -45,6 +45,8 @@ dependencies:
   flutter_translate:
   flutter_instagram_stories: 
   getwidget: ^2.0.4
+  random_string:
+  font_awesome_flutter:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -78,6 +80,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/
+      - assets/icons.png
+      - assets/search.png
       - assets/news/icons.png
       - assets/news/like- 2.png
       - assets/bottom_menu/disable/home.png

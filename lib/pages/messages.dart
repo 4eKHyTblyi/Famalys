@@ -1,4 +1,5 @@
 import 'package:famalys/pages/service/helper.dart';
+import 'package:famalys/pages/widgets/chat_page.dart';
 import 'package:flutter/material.dart';
 
 class ListMessages extends StatefulWidget {
@@ -34,9 +35,19 @@ class _ListMessagesState extends State<ListMessages> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: Column(children: [
-          messagesList(3),
-        ]));
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              'Сообщения',
+              style: HelperFunctions.h1Black,
+            ),
+            HelperFunctions.searchInput(
+                context, MediaQuery.of(context).size.width * 0.75),
+            messagesList(1),
+          ]),
+        ));
   }
 
   messagesList(int length) {
@@ -54,28 +65,41 @@ class _ListMessagesState extends State<ListMessages> {
   }
 
   chatTile(String nick, String message, String time, String photoUrl) {
-    return Container(
-      color: Colors.red,
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image.asset("assets/profile.png"),
-          Column(
-            children: [
-              Text(nick),
-              Container(
-                color: Colors.green,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(message), Text(time)],
-                ),
-              )
-            ],
-          )
-        ],
+    return ListTile(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+      subtitle: Container(
+        padding: const EdgeInsets.only(right: 20),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                'last message',
+              ),
+            ),
+            Text('00:00')
+          ],
+        ),
       ),
+      title: const Text(
+        "Username",
+      ),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Image.asset('assets/profile.png'),
+      ),
+      onTap: () async {
+        nextScreen(
+            context,
+            ChatScreen(
+                chatWithUsername: 'chatWithUsername',
+                name: 'name',
+                photoUrl: '',
+                id: 'id',
+                chatId: 'chatId'));
+      },
+      tileColor: Colors.white24,
+      contentPadding: const EdgeInsets.all(5.0),
     );
   }
 }
