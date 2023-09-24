@@ -44,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(children: [
             HelperFunctions.searchInput(
                 context, MediaQuery.of(context).size.width * 0.8),
+            HelperFunctions.tab("text"),
             SizedBox(
               width: 300,
               height: 30,
@@ -51,7 +52,9 @@ class _SearchPageState extends State<SearchPage> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   ElevatedButton(
-                      onPressed: () {}, child: HelperFunctions.tab("text")),
+                    onPressed: () {},
+                    child: HelperFunctions.tab("text"),
+                  ),
                   ElevatedButton(
                       onPressed: () {}, child: HelperFunctions.tab("text")),
                   ElevatedButton(
