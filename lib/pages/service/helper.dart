@@ -1,7 +1,4 @@
-import 'package:famalys/pages/widgets/message_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/login_page.dart';
@@ -243,10 +240,12 @@ class HelperFunctions {
 
   static Widget tab(String text) {
     return Container(
+      width: 80,
+      height: 70,
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
+        color: const Color.fromRGBO(239, 242, 255, 1),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Text(

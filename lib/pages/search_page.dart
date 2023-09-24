@@ -1,5 +1,9 @@
+import 'package:famalys/global/global_vars.dart';
+import 'package:famalys/main.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
+import 'package:famalys/pages/widgets/drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'messages.dart';
@@ -36,32 +40,73 @@ class _SearchPageState extends State<SearchPage> {
               icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      bottomNavigationBar: MyBottomNavBar(),
-      bottomSheet: Text("DADADADADAAAADADADA"),
+      bottomNavigationBar: const MyBottomNavBar(),
+      drawer: MyDrawer(fio: global_fio),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(children: [
             HelperFunctions.searchInput(
                 context, MediaQuery.of(context).size.width * 0.8),
-            HelperFunctions.tab("text"),
             SizedBox(
-              width: 300,
-              height: 30,
+              width: 400,
+              height: 50,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {},
-                    child: HelperFunctions.tab("text"),
+                    style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                    ),
+                    child: HelperFunctions.tab('Все'),
                   ),
-                  ElevatedButton(
-                      onPressed: () {}, child: HelperFunctions.tab("text")),
-                  ElevatedButton(
-                      onPressed: () {}, child: HelperFunctions.tab("text")),
+                  TextButton(
+                    onPressed: () {},
+                    style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                    ),
+                    child: HelperFunctions.tab('Люди'),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                    ),
+                    child: HelperFunctions.tab('Статьи'),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                    ),
+                    child: HelperFunctions.tab('Игры'),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                    ),
+                    child: HelperFunctions.tab('Курсы'),
+                  ),
                 ],
               ),
-            )
+            ),
+            for (int i = 0; i < 3; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ListTile(
+                  title: Text(
+                    'Иван Иванов',
+                    style: HelperFunctions.h1,
+                  ),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.network(
+                        FirebaseAuth.instance.currentUser!.photoURL.toString()),
+                  ),
+                ),
+              )
           ]),
         ),
       ),

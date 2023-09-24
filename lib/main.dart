@@ -1,16 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/global/global_vars.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pages/auth/login_page.dart';
 import 'pages/home_page.dart';
-import 'pages/service/auth_service.dart';
 import 'pages/service/helper.dart';
 import 'pages/service/provider/google_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
-import 'package:figma_to_flutter/figma_to_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +40,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isSignedIn = false;
 
+  getFio() async {
+    var doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      global_fio = doc.get('fio');
+    });
+  }
+
   getUserLoggedInStatus() async {
     await HelperFunctions.getUserLoggedInStatus().then((value) {
       if (value != null) {
@@ -55,6 +65,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getUserLoggedInStatus();
+    getFio();
   }
 
   // This widget is the root of your application.

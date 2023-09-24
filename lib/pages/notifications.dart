@@ -86,15 +86,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
             style: HelperFunctions.h1,
           ),
           notificationCard("Включить звук уведомлений", LOCAL_SWITCH, "SWITCH"),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Категории уведомлений",
+            style: HelperFunctions.h2,
+          ),
+          notificationCard("Чаты", LOCAL_COMMENTS, "COMMENTS"),
+          notificationCard("Мессенджер", LOCAL_REACTIONS, "REACTIONS"),
           notificationCard(
-              "Включить звук уведомлений", LOCAL_COMMENTS, "COMMENTS"),
-          notificationCard(
-              "Включить звук уведомлений", LOCAL_REACTIONS, "REACTIONS"),
-          notificationCard(
-              "Включить звук уведомлений", LOCAL_PUBLICATION, "PUBLICATION"),
-          notificationCard("Включить звук уведомлений", LOCAL_CHATS, "CHATS"),
-          notificationCard(
-              "Включить звук уведомлений", LOCAL_MESSENGER, "MESSENGER"),
+              "Новые публикации", LOCAL_PUBLICATION, "PUBLICATION"),
+          notificationCard("Ответы и комментарии", LOCAL_CHATS, "CHATS"),
+          notificationCard("Реакции", LOCAL_MESSENGER, "MESSENGER"),
         ]),
       ),
     );

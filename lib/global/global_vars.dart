@@ -10,3 +10,5 @@ bool CHATS = true;
 bool MESSENGER = true;
 
 SharedPreferences? sharedPreferences;
+
+String global_fio = '';
