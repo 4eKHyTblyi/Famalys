@@ -45,7 +45,8 @@ class _SearchPageState extends State<SearchPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             HelperFunctions.searchInput(
                 context, MediaQuery.of(context).size.width * 0.8),
             SizedBox(
@@ -92,6 +93,13 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Text(
+                "Люди",
+                style: HelperFunctions.h1,
+              ),
+            ),
             for (int i = 0; i < 3; i++)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -106,7 +114,20 @@ class _SearchPageState extends State<SearchPage> {
                         FirebaseAuth.instance.currentUser!.photoURL.toString()),
                   ),
                 ),
-              )
+              ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Text(
+                "Статьи",
+                style: HelperFunctions.h1,
+              ),
+            ),
+            ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Card(),
+              ],
+            )
           ]),
         ),
       ),
