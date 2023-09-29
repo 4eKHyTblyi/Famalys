@@ -2,6 +2,7 @@ import 'package:famalys/pages/widgets/message_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/login_page.dart';
@@ -252,6 +253,103 @@ class HelperFunctions {
       child: Text(
         text,
         style: pGrey16,
+      ),
+    );
+  }
+
+  article() {
+    return SafeArea(
+      top: true,
+      child: Container(
+        width: 194,
+        height: 273,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: Image.asset(
+              'assets/Frame 547.png',
+            ).image,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          shape: BoxShape.rectangle,
+        ),
+        child: Align(
+          alignment: AlignmentDirectional(-1.00, 0.00),
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  child: Text(
+                    'Роль дедушки во взрослении внуков',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  child: Text(
+                    'Автор А.А.',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.facebookMessenger,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.ios_share,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.favorite_border,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    Text(
+                      '203',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -122,11 +122,12 @@ class _SearchPageState extends State<SearchPage> {
                 style: HelperFunctions.h1,
               ),
             ),
-            ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                Card(),
-              ],
+            SizedBox(
+              height: 200,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [HelperFunctions().article()],
+              ),
             )
           ]),
         ),
