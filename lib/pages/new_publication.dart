@@ -123,7 +123,20 @@ class _NewPublicationPageState extends State<NewPublicationPage> {
                   border: InputBorder.none),
             ),
           ),
-          HelperFunctions.inputTemplate('', 'О вложений', context)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(Icons.attach_file),
+              SizedBox(
+                  width: 340,
+                  child:
+                      HelperFunctions.inputTemplate('', '0 вложений', context)),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: HelperFunctions.buttonTemplate(context, 'Опубликовать'),
+          )
         ]),
       ),
     );

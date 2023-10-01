@@ -80,6 +80,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/
+      - assets/like.png
+      - assets/rating.png
+      - assets/images.png
+      - assets/profile_with_level.png
+      - assets/Frame 547.png
       - assets/icons.png
       - assets/search.png
       - assets/news/icons.png

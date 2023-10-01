@@ -127,6 +127,7 @@ class HelperFunctions {
       Image image, BuildContext context, Function onPressed) {
     return IconButton(
         splashRadius: 25,
+        splashColor: const Color.fromRGBO(212, 220, 254, 1),
         onPressed: () {
           onPressed;
         },
@@ -257,6 +258,52 @@ class HelperFunctions {
     );
   }
 
+  Widget profileHistory() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      width: 150,
+      height: 200,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          filterQuality: FilterQuality.high,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.3),
+            BlendMode.darken,
+          ),
+          image: Image.asset(
+            'assets/Frame 547.png',
+          ).image,
+        ),
+        borderRadius: BorderRadius.circular(15),
+        shape: BoxShape.rectangle,
+      ),
+      child: const Align(
+        alignment: Alignment.bottomLeft,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 50,
+              child: Text(
+                'Lorem ipsum',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(
+              width: 50,
+              child: Text(
+                '00:00',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   article() {
     return SafeArea(
       top: true,
@@ -274,14 +321,14 @@ class HelperFunctions {
           shape: BoxShape.rectangle,
         ),
         child: Align(
-          alignment: AlignmentDirectional(-1.00, 0.00),
+          alignment: const AlignmentDirectional(-1.00, 0.00),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Align(
+                const Align(
                   alignment: AlignmentDirectional(-1.00, 0.00),
                   child: Text(
                     'Роль дедушки во взрослении внуков',
@@ -292,7 +339,7 @@ class HelperFunctions {
                     ),
                   ),
                 ),
-                Align(
+                const Align(
                   alignment: AlignmentDirectional(-1.00, 0.00),
                   child: Text(
                     'Автор А.А.',
@@ -308,7 +355,7 @@ class HelperFunctions {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         FontAwesomeIcons.facebookMessenger,
                         color: Colors.white,
                         size: 24,
@@ -318,7 +365,7 @@ class HelperFunctions {
                       },
                     ),
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.ios_share,
                         color: Colors.white,
                         size: 24,
@@ -328,7 +375,7 @@ class HelperFunctions {
                       },
                     ),
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.favorite_border,
                         color: Colors.white,
                         size: 24,
@@ -337,7 +384,7 @@ class HelperFunctions {
                         print('IconButton pressed ...');
                       },
                     ),
-                    Text(
+                    const Text(
                       '203',
                       style: TextStyle(
                         fontFamily: 'Poppins',

@@ -32,7 +32,7 @@ class _NewPostState extends State<NewPost> {
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
-      height: 870,
+      height: 900,
       constraints: const BoxConstraints(maxHeight: 1000),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +142,7 @@ class _NewPostState extends State<NewPost> {
                   },
                   icon: const ImageIcon(AssetImage("assets/icons.png"))),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.685,
+                width: MediaQuery.of(context).size.width * 0.645,
                 child: HelperFunctions.inputTemplate(
                     "", "Ваш комментарий...", context),
               ),
