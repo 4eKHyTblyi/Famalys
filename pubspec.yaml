@@ -81,10 +81,15 @@ flutter:
   assets:
       - assets/
       - assets/like.png
+      - assets/ball.png
+      - assets/book.png
+      - assets/courses.png
+      - assets/chat.png
       - assets/rating.png
       - assets/images.png
       - assets/profile_with_level.png
       - assets/Frame 547.png
+      - assets/Frame 718.png
       - assets/icons.png
       - assets/search.png
       - assets/news/icons.png
@@ -100,6 +105,7 @@ flutter:
       - assets/bottom_menu/active/profile.png
       - assets/bottom_menu/active/search.png
       - assets/bottom_menu/active/services.png
+      - assets/search+ 3.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

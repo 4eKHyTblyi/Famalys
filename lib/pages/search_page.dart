@@ -125,8 +125,24 @@ class _SearchPageState extends State<SearchPage> {
             SizedBox(
               height: 200,
               child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 scrollDirection: Axis.horizontal,
-                children: [HelperFunctions().article()],
+                shrinkWrap: true,
+                children: [
+                  HelperFunctions().article(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  HelperFunctions().article(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  HelperFunctions().article(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  HelperFunctions().article()
+                ],
               ),
             )
           ]),

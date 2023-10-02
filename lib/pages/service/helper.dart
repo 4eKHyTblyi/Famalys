@@ -27,6 +27,9 @@ class HelperFunctions {
   static TextStyle h1Black = const TextStyle(
       color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500);
 
+  static TextStyle h1Black26 = const TextStyle(
+      color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500);
+
   static TextStyle h2 = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
       fontSize: 16,
@@ -172,6 +175,23 @@ class HelperFunctions {
 
   // saving the data to SF
 
+  /// saving notifications prefs
+
+  static String _switch = "SWITCH";
+  static String _comments = "COMMENTS";
+  static String _messenger = "MESSENGER";
+  static String _publication = "PUBLICATION";
+  static String _reactions = "REACTIONS";
+  static String _chats = "CHATS";
+
+  static Future<bool> saveNotificationsPreference(
+      String name_notifications, bool value_of_notifications) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setBool(name_notifications, value_of_notifications);
+  }
+
+  ///
+
   static Future<bool> saveUserLoggedInStatus(bool isUserLoggedIn) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return await sf.setBool(userLoggedInKey, isUserLoggedIn);
@@ -185,6 +205,16 @@ class HelperFunctions {
   static Future<bool> saveUserEmailSF(String userEmail) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return await sf.setString(userEmailKey, userEmail);
+  }
+
+  static initNotifications() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    sf.setBool(_switch, true);
+    sf.setBool(_comments, true);
+    sf.setBool(_chats, true);
+    sf.setBool(_reactions, true);
+    sf.setBool(_publication, true);
+    sf.setBool(_messenger, true);
   }
 
   // getting the data from SF
@@ -253,7 +283,7 @@ class HelperFunctions {
       ),
       child: Text(
         text,
-        style: pGrey16,
+        style: pGrey,
       ),
     );
   }
@@ -353,6 +383,110 @@ class HelperFunctions {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.facebookMessenger,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.ios_share,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.favorite_border,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                    const Text(
+                      '203',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  article2(bool typ) {
+    return SafeArea(
+      top: true,
+      child: Container(
+        width: 400,
+        height: 200,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: Image.asset(
+              typ ? 'assets/Frame 547.png' : 'assets/Frame 718.png',
+            ).image,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          shape: BoxShape.rectangle,
+        ),
+        child: Align(
+          alignment: const AlignmentDirectional(-1.00, 0.00),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  width: 200,
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(-1.00, 0.00),
+                          child: Text(
+                            'Роль дедушки во взрослении внуков',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(-1.00, 0.00),
+                          child: Text(
+                            'Автор А.А.',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                      ]),
+                ),
+                Row(
                   children: [
                     IconButton(
                       icon: const Icon(

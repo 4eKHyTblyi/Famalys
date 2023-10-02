@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController2 = TabController(length: 5, vsync: this);
   }
 
@@ -59,119 +59,123 @@ class _ProfilePageState extends State<ProfilePage>
       ),
       drawer: MyDrawer(fio: global_fio),
       bottomNavigationBar: const MyBottomNavBar(),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const ClipRRect(
-              child: Image(
-                image: AssetImage('assets/profile_with_level.png'),
-                fit: BoxFit.cover,
-                width: 100,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ClipRRect(
+                child: Image(
+                  image: AssetImage('assets/profile_with_level.png'),
+                  fit: BoxFit.cover,
+                  width: 100,
+                ),
               ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Мария Ивановна',
-                  style: HelperFunctions.h1Black,
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.edit_outlined,
-                      color: Colors.black12,
-                    )),
-              ],
-            ),
-            Text(
-              '@maria_2444',
-              style: HelperFunctions.pGrey,
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 10)),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '32 подписки',
-                  style: HelperFunctions.pGrey,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  '144 подписчика',
-                  style: HelperFunctions.pGrey,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Text(
-                """Semper faucibus bibendum odio cras tortor est. Ipsum vitae ut et id suspendisse diam. Ut in eget morbi id diam morbi. Elit etiam felis malesuada habitant lectus mattis ultricies fusce. Sed eu libero vel accumsan libero ac. Volutpat nam turpis facilisis nec. Quam mattis tincidunt bibendum convallis neque. Fusce mauris sed condimentum dolor quis ut.""",
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Мария Ивановна',
+                    style: HelperFunctions.h1Black,
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                        color: Colors.black12,
+                      )),
+                ],
+              ),
+              Text(
+                '@maria_2444',
                 style: HelperFunctions.pGrey,
               ),
-            ),
-            TabBar(
-                indicatorColor: Colors.transparent,
-                controller: _tabController,
-                tabs: [
-                  Tab(
+              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '32 подписки',
+                    style: HelperFunctions.pGrey,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    '144 подписчика',
+                    style: HelperFunctions.pGrey,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  """Semper faucibus bibendum odio cras tortor est. Ipsum vitae ut et id suspendisse diam. Ut in eget morbi id diam morbi. Elit etiam felis malesuada habitant lectus mattis ultricies fusce. Sed eu libero vel accumsan libero ac. Volutpat nam turpis facilisis nec. Quam mattis tincidunt bibendum convallis neque. Fusce mauris sed condimentum dolor quis ut.""",
+                  style: HelperFunctions.pGrey,
+                ),
+              ),
+              TabBar(
+                  indicatorColor: Colors.transparent,
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                        height: 70,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                                height: 50,
+                                child: Image.asset('assets/images.png')),
+                            Text(
+                              'Альбом',
+                              style: HelperFunctions.pGrey,
+                            )
+                          ],
+                        )),
+                    Tab(
                       height: 70,
                       child: Column(
                         children: [
                           SizedBox(
                               height: 50,
-                              child: Image.asset('assets/images.png')),
+                              child: Image.asset('assets/like.png')),
                           Text(
-                            'Альбом',
+                            'Заметки',
                             style: HelperFunctions.pGrey,
                           )
                         ],
-                      )),
-                  Tab(
-                    height: 70,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            height: 50, child: Image.asset('assets/like.png')),
-                        Text(
-                          'Заметки',
-                          style: HelperFunctions.pGrey,
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                  Tab(
-                    height: 70,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            height: 50,
-                            child: Image.asset('assets/rating.png')),
-                        Text(
-                          'Рейтинг',
-                          style: HelperFunctions.pGrey,
-                        )
-                      ],
-                    ),
-                  ),
-                ]),
-            SizedBox(
-              height: 10,
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: TabBarView(
-                  controller: _tabController,
-                  children: [listOfHistories(), notes(), listOfHistories()]),
-            ))
-          ],
+                    // Tab(
+                    //   height: 70,
+                    //   child: Column(
+                    //     children: [
+                    //       SizedBox(
+                    //           height: 50,
+                    //           child: Image.asset('assets/rating.png')),
+                    //       Text(
+                    //         'Рейтинг',
+                    //         style: HelperFunctions.pGrey,
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                  ]),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                  height: 1200,
+                  width: MediaQuery.of(context).size.width,
+                  child: TabBarView(controller: _tabController, children: [
+                    listOfHistories(),
+                    notes(),
+                  ]))
+            ],
+          ),
         ),
       ),
     );
@@ -206,59 +210,64 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Widget notes() {
-    return TabBar(
-      controller: _tabController2,
-      tabs: [
-        Tab(
-          height: 300,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Публикации",
-              style: HelperFunctions.h1,
-            ),
-          ),
+    return Column(
+      children: [
+        TabBar(
+          indicatorColor: Colors.transparent,
+          isScrollable: true,
+          controller: _tabController2,
+          tabs: [
+            Tab(
+                height: 30,
+                child: SizedBox(
+                    width: 110, child: HelperFunctions.tab('Публикации'))),
+            Tab(
+                height: 30,
+                child:
+                    SizedBox(width: 90, child: HelperFunctions.tab('Статьи'))),
+            Tab(
+                height: 30,
+                child: SizedBox(width: 90, child: HelperFunctions.tab('Люди'))),
+            Tab(
+                height: 30,
+                child: SizedBox(width: 90, child: HelperFunctions.tab('Игры'))),
+            Tab(
+                height: 30,
+                child:
+                    SizedBox(width: 90, child: HelperFunctions.tab('Курсы'))),
+          ],
         ),
-        Tab(
-          height: 30,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Статьи",
-              style: HelperFunctions.h1,
-            ),
+        NewPost(
+            name: "name",
+            userName: "userName",
+            photoUrl: "",
+            userId: "userId",
+            postId: "postId")
+      ],
+    );
+  }
+
+  Widget rating() {
+    return Column(
+      children: [
+        Container(
+          width: 300,
+          height: 400,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            children: [
+              Container(
+                width: 200,
+                height: 200,
+                child: CircularProgressIndicator.adaptive(
+                  value: 0.78,
+                  backgroundColor: Colors.grey.shade300,
+                  strokeWidth: 30.0,
+                ),
+              ),
+            ],
           ),
-        ),
-        Tab(
-          height: 30,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Люди",
-              style: HelperFunctions.h1,
-            ),
-          ),
-        ),
-        Tab(
-          height: 30,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Игры",
-              style: HelperFunctions.h1,
-            ),
-          ),
-        ),
-        Tab(
-          height: 30,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Text(
-              "Курсы",
-              style: HelperFunctions.h1,
-            ),
-          ),
-        ),
+        )
       ],
     );
   }

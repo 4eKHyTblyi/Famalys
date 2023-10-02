@@ -277,6 +277,8 @@ class _RegisterPageEndState extends State<RegisterPageEnd> {
 
                             FirebaseAuth.instance.currentUser!
                                 .updateDisplayName(nickName.text);
+
+                            HelperFunctions.initNotifications();
                             nextScreen(context, const HomePage());
                           } else {
                             showSnackBar(value, context, Colors.red);

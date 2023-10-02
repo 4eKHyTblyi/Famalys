@@ -3,6 +3,7 @@ import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -25,10 +26,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
   String myId = "";
   CollectionReference notifications_coll =
       FirebaseFirestore.instance.collection('users');
-  user() {
+
+  SharedPreferences? sharedPreferences;
+
+  user() async {
     myId = myUser!.uid;
     notifications_coll =
         notifications_coll.doc(myId).collection('notifications');
+
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
   @override

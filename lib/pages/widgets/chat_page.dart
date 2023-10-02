@@ -316,27 +316,27 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             alignment: Alignment.bottomCenter,
             child: Container(
-              color: Colors.black.withOpacity(0.8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
-                  Expanded(
-                      child: TextField(
-                    controller: messageTextEdittingController,
-                    onChanged: (value) {},
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "type a message",
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.6))),
-                  )),
                   GestureDetector(
-                    onTap: () {},
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/icons.png',
+                      )),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: HelperFunctions.inputTemplate(
+                        'label', 'Введите сообщение', context),
+                  )),
+                  Transform.rotate(
+                    angle: 44.78,
+                    child: GestureDetector(
+                        onTap: () {},
+                        child: Image.asset(
+                          'assets/msg_icons.png',
+                        )),
                   )
                 ],
               ),
