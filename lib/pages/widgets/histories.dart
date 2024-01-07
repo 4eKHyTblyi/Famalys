@@ -1,11 +1,12 @@
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/service/helper.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:famalys/pages/widgets/video_record.dart';
 import 'package:flutter/material.dart';
 
 class Histories extends StatefulWidget {
-  CollectionReference<HistoryTemplate> histories;
-  Histories({super.key, required this.histories});
+  final CollectionReference<HistoryTemplate> histories;
+  const Histories({super.key, required this.histories});
 
   @override
   State<Histories> createState() => _HistoriesState();
@@ -24,7 +25,9 @@ class _HistoriesState extends State<Histories> {
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Align(
+                alignment: Alignment.topCenter,
+                child: CircularProgressIndicator());
           }
 
           final data = snapshot.requireData;
@@ -45,19 +48,26 @@ class _HistoriesState extends State<Histories> {
   }
 
   addNewHostory() {
-    return Container(
-      decoration: HelperFunctions().kGradientBoxDecoration,
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          decoration: HelperFunctions().kInnerDecoration,
+    return GestureDetector(
+      onTap: () async {
+        final cameras = await availableCameras();
+        final first_camera = cameras.first;
+        nextScreen(context, RecordPage(camera: first_camera));
+      },
+      child: Container(
+        decoration: HelperFunctions().kGradientBoxDecoration,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
           child: Container(
-            margin: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(100)),
-            height: 55,
-            width: 55,
-            child: const Center(child: Icon(Icons.add)),
+            decoration: HelperFunctions().kInnerDecoration,
+            child: Container(
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                  color: Colors.grey, borderRadius: BorderRadius.circular(100)),
+              height: 55,
+              width: 55,
+              child: const Center(child: Icon(Icons.add)),
+            ),
           ),
         ),
       ),

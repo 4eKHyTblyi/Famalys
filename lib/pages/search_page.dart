@@ -16,6 +16,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  TextEditingController search = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +42,14 @@ class _SearchPageState extends State<SearchPage> {
         ],
       ),
       bottomNavigationBar: const MyBottomNavBar(),
-      drawer: MyDrawer(fio: global_fio),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             HelperFunctions.searchInput(
-                context, MediaQuery.of(context).size.width * 0.8),
+                context, MediaQuery.of(context).size.width * 0.8, search),
             SizedBox(
               width: 400,
               height: 50,

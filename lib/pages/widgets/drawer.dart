@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/account.dart';
 import 'package:famalys/pages/notifications.dart';
 import 'package:famalys/pages/security.dart';
@@ -10,14 +11,15 @@ import 'package:flutter/material.dart';
 import '../auth/login_page.dart';
 
 class MyDrawer extends StatefulWidget {
-  String fio;
-  MyDrawer({super.key, required this.fio});
+  const MyDrawer({super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+  String fio = global_fio;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -30,7 +32,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 children: [
                   ListTile(
                     title: Text(
-                      widget.fio,
+                      fio,
                       style: HelperFunctions.h1,
                     ),
                     subtitle: Text(
@@ -38,10 +40,11 @@ class _MyDrawerState extends State<MyDrawer> {
                       style: HelperFunctions.pGrey,
                     ),
                     leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.network(FirebaseAuth
-                          .instance.currentUser!.photoURL
-                          .toString()),
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.network(
+                        global_avatar,
+                        fit: BoxFit.fitWidth,
+                      ),
                     ),
                   ),
                   ListTile(
@@ -50,7 +53,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       nextScreen(
                           context,
                           ProfilePage(
-                            fio: widget.fio,
+                            fio: global_fio,
                           ));
                     },
                     leading: Image.asset(
@@ -117,6 +120,42 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                     title: const Text(
                       "Поддержка",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    minVerticalPadding: 10,
+                    minLeadingWidth: 10,
+                    onTap: () async {},
+                    leading: Image.asset(
+                      'assets/users.png',
+                      width: 24,
+                      height: 24,
+                      fit: BoxFit.cover,
+                    ),
+                    title: const Text(
+                      "Добро",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    minVerticalPadding: 10,
+                    minLeadingWidth: 10,
+                    onTap: () async {},
+                    leading: Image.asset(
+                      'assets/users.png',
+                      width: 24,
+                      height: 24,
+                      fit: BoxFit.cover,
+                    ),
+                    title: const Text(
+                      "Администраторам",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

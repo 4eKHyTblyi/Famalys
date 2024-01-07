@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'messages.dart';
 
 class IntaractivePage extends StatefulWidget {
-  const IntaractivePage({super.key});
+  final int index;
+  const IntaractivePage({required this.index, super.key});
 
   @override
   State<IntaractivePage> createState() => _IntaractivePageState();
@@ -21,7 +22,8 @@ class _IntaractivePageState extends State<IntaractivePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController =
+        TabController(length: 4, vsync: this, initialIndex: widget.index);
   }
 
   @override
@@ -55,88 +57,73 @@ class _IntaractivePageState extends State<IntaractivePage>
         ],
       ),
       bottomNavigationBar: const MyBottomNavBar(),
-      drawer: MyDrawer(fio: global_fio),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          width: MediaQuery.of(context).size.width,
-          child: Column(children: [
-            TabBar(
-                indicatorColor: Colors.transparent,
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                      height: 70,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                              height: 50,
-                              child: Image.asset('assets/courses.png')),
-                          Text(
-                            'Альбом',
-                            style: HelperFunctions.pGrey,
-                          )
-                        ],
-                      )),
-                  Tab(
-                    height: 70,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            height: 50, child: Image.asset('assets/ball.png')),
-                        Text(
-                          'Заметки',
-                          style: HelperFunctions.pGrey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    height: 70,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            height: 50, child: Image.asset('assets/book.png')),
-                        Text(
-                          'Рейтинг',
-                          style: HelperFunctions.pGrey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    height: 70,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            height: 50, child: Image.asset('assets/chat.png')),
-                        Text(
-                          'Рейтинг',
-                          style: HelperFunctions.pGrey,
-                        )
-                      ],
-                    ),
-                  ),
-                ]),
-            Container(
-                height: 1000,
-                width: MediaQuery.of(context).size.width,
-                child: TabBarView(controller: _tabController, children: [
-                  library(),
-                  library(),
-                  library(),
-                  library(),
-                ]))
-          ]),
-        ),
+      drawer: MyDrawer(),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        width: MediaQuery.of(context).size.width,
+        child: Column(children: [
+          Expanded(
+            child: TabBarView(controller: _tabController, children: [
+              courses(),
+              games(),
+              library(),
+              library(),
+            ]),
+          )
+        ]),
       ),
     );
   }
 
+  Widget games() {
+    TextEditingController search = TextEditingController();
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: ListView(children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Игры',
+          style: HelperFunctions.h1Black26,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+            'Lorem ipsum dolor sit amet consectetur. Tincidunt sollicitudin eget pellentesque est at viverra neque.'),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: HelperFunctions.searchInput(
+              context, MediaQuery.of(context).size.width * 0.82, search),
+        ),
+
+        for (int i = 0; i < 3; i++) articles(i, isGame: true),
+
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 3,
+        //   width: MediaQuery.of(context).size.width,
+        //   child: ListView.builder(
+        //       itemCount: 3,
+        //       itemBuilder: (context, index) {
+        //         return Padding(
+        //           padding: const EdgeInsets.symmetric(vertical: 10),
+        //           child: HelperFunctions().article2(
+        //               true, context, 'Тут должен быть текст', 'Автор', '0'),
+        //         );
+        //       }),
+        // )
+      ]),
+    );
+  }
+
   Widget library() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    TextEditingController search = TextEditingController();
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: ListView(children: [
         SizedBox(
           height: 10,
         ),
@@ -152,21 +139,102 @@ class _IntaractivePageState extends State<IntaractivePage>
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: HelperFunctions.searchInput(
-              context, MediaQuery.of(context).size.width * 0.82),
+              context, MediaQuery.of(context).size.width * 0.82, search),
         ),
+
+        for (int i = 0; i < 3; i++) articles(i),
+
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 3,
+        //   width: MediaQuery.of(context).size.width,
+        //   child: ListView.builder(
+        //       itemCount: 3,
+        //       itemBuilder: (context, index) {
+        //         return Padding(
+        //           padding: const EdgeInsets.symmetric(vertical: 10),
+        //           child: HelperFunctions().article2(
+        //               true, context, 'Тут должен быть текст', 'Автор', '0'),
+        //         );
+        //       }),
+        // )
+      ]),
+    );
+  }
+
+  Widget articles(int count, {bool? isGame}) {
+    return Column(children: [
+      SizedBox(
+        height: 30,
+      ),
+      if (isGame != null && isGame)
+        HelperFunctions().game('text', context, 'photoUrl', 202, 1, 1)
+      else
+        HelperFunctions()
+            .article2(true, context, 'Тут должен быть текст', 'Автор', '0')
+    ]);
+  }
+
+  Widget course(int count) {
+    return Column(children: [
+      SizedBox(
+        height: 30,
+      ),
+      coursesTemplate(
+          context, 'Тут должен быть текст', 'Тут должен быть текст', 'Автор', 1)
+    ]);
+  }
+
+  Widget courses() {
+    TextEditingController search = TextEditingController();
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: ListView(children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Курсы',
+          style: HelperFunctions.h1Black26,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+            'Проходите квесты, чтобы найти для себя новую и интересную информацию. Развивайтесь и учитесь  вместе со своей семьёй.'),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: HelperFunctions().article2(true),
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: HelperFunctions.searchInput(
+              context, MediaQuery.of(context).size.width * 0.82, search),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: HelperFunctions().article2(false),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: HelperFunctions().article2(true),
-        ),
-      ],
+
+        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          Column(
+            children: [
+              for (int i = 0; i < 3; i++) course(i),
+            ],
+          ),
+          Column(
+            children: [
+              for (int i = 0; i < 3; i++) course(i),
+            ],
+          ),
+        ])
+
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 3,
+        //   width: MediaQuery.of(context).size.width,
+        //   child: ListView.builder(
+        //       itemCount: 3,
+        //       itemBuilder: (context, index) {
+        //         return Padding(
+        //           padding: const EdgeInsets.symmetric(vertical: 10),
+        //           child: HelperFunctions().article2(
+        //               true, context, 'Тут должен быть текст', 'Автор', '0'),
+        //         );
+        //       }),
+        // )
+      ]),
     );
   }
 }

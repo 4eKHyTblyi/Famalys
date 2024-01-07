@@ -14,6 +14,7 @@ class NewPublicationPage extends StatefulWidget {
 }
 
 class _NewPublicationPageState extends State<NewPublicationPage> {
+  TextEditingController comment = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +39,7 @@ class _NewPublicationPageState extends State<NewPublicationPage> {
               icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: MyDrawer(fio: global_fio),
+      drawer: MyDrawer(),
       bottomNavigationBar: const MyBottomNavBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -129,8 +130,8 @@ class _NewPublicationPageState extends State<NewPublicationPage> {
               Icon(Icons.attach_file),
               SizedBox(
                   width: 340,
-                  child:
-                      HelperFunctions.inputTemplate('', '0 вложений', context)),
+                  child: HelperFunctions.inputTemplate(
+                      '', '0 вложений', context, comment)),
             ],
           ),
           Padding(

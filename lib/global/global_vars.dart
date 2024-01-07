@@ -12,3 +12,8 @@ bool MESSENGER = true;
 SharedPreferences? sharedPreferences;
 
 String global_fio = '';
+String global_avatar = '';
+String global_nickname = '';
+String global_description = '';
+String global_email = '';
+String global_phone = '';

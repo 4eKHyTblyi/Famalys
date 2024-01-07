@@ -231,9 +231,9 @@ class DatabaseService {
   Future<Stream<QuerySnapshot>> getChatRoomMessages(chatRoomId) async {
     return FirebaseFirestore.instance
         .collection("chats")
-        .doc(chatRoomId)
-        .collection("chats")
-        .orderBy("ts", descending: true)
+        .doc(chatRoomId.toString())
+        .collection("messages")
+        .orderBy("time", descending: true)
         .snapshots();
   }
 
@@ -263,7 +263,7 @@ class DatabaseService {
   }
 
   Future<Stream<QuerySnapshot>> getChatRooms() async {
-    String myUsername = HelperFunctions().getUserName().toString();
+    String myUsername = HelperFunctions().getUserId().toString();
     return FirebaseFirestore.instance
         .collection("chats")
         //.orderBy("lastMessage", descending: true)
@@ -275,7 +275,7 @@ class DatabaseService {
     return FirebaseFirestore.instance
         .collection("chats")
         .doc(chatRoomId)
-        .collection("chats")
+        .collection("messages")
         .doc(messageId)
         .set(messageInfoMap);
   }
@@ -300,9 +300,14 @@ class DatabaseService {
         .update({"unreadMessage": kolvo});
   }
 
-  Future addChat(String uid, String chatId) {
-    return FirebaseFirestore.instance.collection("users").doc(uid).update({
-      "chats": FieldValue.arrayUnion([chatId])
+  Future addChat(List users, String chatId) {
+    return FirebaseFirestore.instance.collection("chats").doc(chatId).set({
+      "users": users,
+      "lastMessage": "",
+      "lastMessageSendBy": "",
+      "lastMessageSendTs": "",
+      "lastMessageSendByID": DateTime.now(),
+      "unreadMessage": 0,
     });
   }
 

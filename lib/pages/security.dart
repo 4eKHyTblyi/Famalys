@@ -12,8 +12,22 @@ class SecurityPage extends StatefulWidget {
 class _SecurityPageState extends State<SecurityPage> {
   bool view = false;
   bool view2 = false;
+
+  TextEditingController oldPassword = TextEditingController();
+  TextEditingController newPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    void _show(BuildContext ctx) {
+      showModalBottomSheet(
+          context: ctx,
+          builder: (context) {
+            return Builder(builder: (context) {
+              return ErrorWidget("Пароли не совпадают");
+            });
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -52,11 +66,17 @@ class _SecurityPageState extends State<SecurityPage> {
                 "Сменить пароль",
                 style: HelperFunctions.h2,
               ),
-              HelperFunctions.passwordInput("Новый пароль", view, context),
               HelperFunctions.passwordInput(
-                  "Новый пароль (повторите)", view2, context),
+                  "Новый пароль", view, context, oldPassword),
+              HelperFunctions.passwordInput(
+                  "Новый пароль (повторите)", view2, context, newPassword),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (oldPassword.text == newPassword.text) {
+                    } else {
+                      _show(context);
+                    }
+                  },
                   clipBehavior: Clip.antiAlias,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),

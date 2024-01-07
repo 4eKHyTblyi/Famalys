@@ -16,19 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String fio = '';
-
-  getFio() async {
-    var doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      fio = doc.get('fio');
-    });
-  }
-
   var list = FirebaseFirestore.instance
       .collection('histories')
       .withConverter<HistoryTemplate>(
@@ -39,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getFio();
   }
 
   @override
@@ -67,9 +53,7 @@ class _HomePageState extends State<HomePage> {
               icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: MyDrawer(
-        fio: fio,
-      ),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -95,6 +79,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
+                  NewPost(
+                      name: "name",
+                      userName: "userName",
+                      photoUrl: "",
+                      userId: "userId",
+                      postId: "postId"),
                   NewPost(
                       name: "name",
                       userName: "userName",

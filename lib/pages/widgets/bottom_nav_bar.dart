@@ -7,6 +7,8 @@ import 'package:famalys/pages/new_publication.dart';
 import 'package:famalys/pages/profile_page.dart';
 import 'package:famalys/pages/search_page.dart';
 import 'package:famalys/pages/service/helper.dart';
+import 'package:famalys/pages/widgets/test.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomNavBar extends StatefulWidget {
@@ -28,7 +30,6 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
     SearchPage(),
     NewPublicationPage(),
     ProfilePage(),
-    IntaractivePage()
   ];
 
   @override
@@ -51,8 +52,93 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
         setState(() {
           _index = index;
         });
+
         _index = index;
-        nextScreenReplace(context, page_list[index]);
+        if (index != 4) {
+          nextScreenReplace(context, page_list[index]);
+        } else {
+          showMenu(
+              context: context,
+              position: RelativeRect.fromDirectional(
+                  textDirection: TextDirection.ltr,
+                  start: 100,
+                  top: 470,
+                  end: 10,
+                  bottom: 70),
+              items: [
+                PopupMenuItem(
+                    onTap: () {
+                      nextScreen(
+                          context,
+                          const IntaractivePage(
+                            index: 0,
+                          ));
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                            height: 50,
+                            child: Image.asset('assets/courses.png')),
+                        Text(
+                          'Курсы',
+                          style: HelperFunctions.pGrey,
+                        )
+                      ],
+                    )),
+                PopupMenuItem(
+                    onTap: () {
+                      nextScreen(
+                          context,
+                          const IntaractivePage(
+                            index: 1,
+                          ));
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                            height: 50, child: Image.asset('assets/ball.png')),
+                        Text(
+                          'Игры',
+                          style: HelperFunctions.pGrey,
+                        )
+                      ],
+                    )),
+                PopupMenuItem(
+                    onTap: () {
+                      nextScreen(
+                          context,
+                          const IntaractivePage(
+                            index: 2,
+                          ));
+                    },
+                    child: Row(children: [
+                      SizedBox(
+                          height: 50, child: Image.asset('assets/book.png')),
+                      Text(
+                        'Библиотека',
+                        style: HelperFunctions.pGrey,
+                        softWrap: false,
+                        overflow: TextOverflow.visible,
+                      )
+                    ])),
+                PopupMenuItem(
+                    onTap: () {
+                      nextScreen(
+                          context,
+                          const IntaractivePage(
+                            index: 3,
+                          ));
+                    },
+                    child: Row(children: [
+                      SizedBox(
+                          height: 50, child: Image.asset('assets/chat.png')),
+                      Text(
+                        'Чат',
+                        style: HelperFunctions.pGrey,
+                      )
+                    ]))
+              ]);
+        }
       },
       itemBuilder: _Builder(),
       backgroundColor: const Color.fromRGBO(239, 242, 255, 1),
@@ -99,6 +185,12 @@ class _Builder extends DelegateBuilder {
     Image.asset('assets/bottom_menu/disable/add.png'),
     Image.asset('assets/bottom_menu/disable/profile.png'),
     Image.asset('assets/bottom_menu/active/services.png'),
+    // PopupMenuButton(
+    //     onOpened: () {},
+    //     itemBuilder: (context) => [
+    //
+    //         ],
+    //     icon: ),
   ];
   @override
   Widget build(BuildContext context, int index, bool active) {

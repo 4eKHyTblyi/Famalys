@@ -25,7 +25,10 @@ class HelperFunctions {
       fontWeight: FontWeight.w500);
 
   static TextStyle h1Black = const TextStyle(
-      color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500);
+      color: Colors.black,
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      overflow: TextOverflow.fade);
 
   static TextStyle h1Black26 = const TextStyle(
       color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500);
@@ -51,16 +54,15 @@ class HelperFunctions {
   static EdgeInsets paddingH15V10 =
       const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
 
-  static Widget inputTemplate(
-      String label, String hintText, BuildContext context) {
-    TextEditingController? password;
+  static Widget inputTemplate(String label, String hintText,
+      BuildContext context, TextEditingController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: const Color.fromRGBO(239, 242, 255, 1),
           borderRadius: BorderRadius.circular(25)),
       child: TextFormField(
-        controller: password,
+        controller: controller,
         decoration: InputDecoration(
             hintStyle: const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
             hintText: hintText,
@@ -86,8 +88,8 @@ class HelperFunctions {
     borderRadius: BorderRadius.circular(100),
   );
 
-  static Widget passwordInput(String label, bool hide, BuildContext context) {
-    TextEditingController? password;
+  static Widget passwordInput(String label, bool hide, BuildContext context,
+      TextEditingController? password) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -259,12 +261,14 @@ class HelperFunctions {
     return prefs.getString(userProfilePicKey);
   }
 
-  static Widget searchInput(BuildContext context, double width) {
+  static Widget searchInput(
+      BuildContext context, double width, TextEditingController controller) {
     return Row(
       children: [
         SizedBox(
             width: width,
-            child: HelperFunctions.inputTemplate("label", "Поиск", context)),
+            child: HelperFunctions.inputTemplate(
+                "label", "Поиск", context, controller)),
         HelperFunctions.buttomImageTemplate(
             Image.asset('assets/search.png'), context, () {
           print(1);
@@ -290,7 +294,7 @@ class HelperFunctions {
 
   Widget profileHistory() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       width: 150,
       height: 200,
       padding: const EdgeInsets.all(10),
@@ -339,7 +343,7 @@ class HelperFunctions {
       top: true,
       child: Container(
         width: 194,
-        height: 273,
+        height: 230,
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
@@ -431,11 +435,12 @@ class HelperFunctions {
     );
   }
 
-  article2(bool typ) {
+  article2(bool typ, BuildContext context, String text, String author,
+      String likes) {
     return SafeArea(
       top: true,
       child: Container(
-        width: 400,
+        width: MediaQuery.of(context).size.width,
         height: 200,
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -456,17 +461,17 @@ class HelperFunctions {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(
-                  width: 200,
+                SizedBox(
+                  width: 180,
                   child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Align(
-                          alignment: AlignmentDirectional(-1.00, 0.00),
+                          alignment: const AlignmentDirectional(-1.00, 0.00),
                           child: Text(
-                            'Роль дедушки во взрослении внуков',
-                            style: TextStyle(
+                            text,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontFamily: 'Poppins',
                               color: Colors.white,
@@ -474,10 +479,10 @@ class HelperFunctions {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(-1.00, 0.00),
+                          alignment: const AlignmentDirectional(-1.00, 0.00),
                           child: Text(
-                            'Автор А.А.',
-                            style: TextStyle(
+                            author,
+                            style: const TextStyle(
                               fontFamily: 'Poppins',
                               color: Colors.white,
                               fontWeight: FontWeight.w300,
@@ -518,9 +523,9 @@ class HelperFunctions {
                         print('IconButton pressed ...');
                       },
                     ),
-                    const Text(
-                      '203',
-                      style: TextStyle(
+                    Text(
+                      likes,
+                      style: const TextStyle(
                         fontFamily: 'Poppins',
                         color: Colors.white,
                       ),
@@ -534,6 +539,138 @@ class HelperFunctions {
       ),
     );
   }
+
+  game(String text, BuildContext context, String photoUrl, int likes,
+      int category, int views) {
+    List<String> categories_image = [
+      "assets/games-category/phys.png",
+      "assets/games-category/learn.png",
+      "assets/games-category/voice.png",
+    ];
+
+    return SafeArea(
+      top: true,
+      child: Column(
+        children: [
+          Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: Image.asset(
+                    'assets/Frame 718.png',
+                  ).image,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                shape: BoxShape.rectangle,
+              ),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: [Image.asset(categories_image[category])],
+                ),
+              )),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Резиночки', style: HelperFunctions.h1Black),
+              Text('345 просмотров', style: HelperFunctions.pGrey),
+            ]),
+            buttonsPanel(likes)
+          ])
+        ],
+      ),
+    );
+  }
+}
+
+buttonsPanel(int likes) {
+  return Row(
+    children: [
+      SizedBox(
+        width: 40,
+        child: IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/news/comment.png'),
+          ),
+          onPressed: () {},
+        ),
+      ),
+      SizedBox(
+        width: 40,
+        child: IconButton(
+          icon: ImageIcon(
+            AssetImage('assets/news/icons.png'),
+          ),
+          onPressed: () {},
+        ),
+      ),
+      Row(
+        children: [
+          SizedBox(
+            width: 40,
+            child: IconButton(
+              color: Colors.red,
+              icon: ImageIcon(
+                AssetImage('assets/news/like- 2.png'),
+              ),
+              onPressed: () {},
+            ),
+          ),
+          Text(
+            '203',
+            style: HelperFunctions.pGrey,
+          )
+        ],
+      ),
+    ],
+  );
+}
+
+coursesTemplate(
+    BuildContext context, String title, String text, String likes, int long) {
+  return Container(
+      width: MediaQuery.of(context).size.width / 2.3,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        image: const DecorationImage(
+            image: AssetImage('assets/Acuarela2.png'), fit: BoxFit.cover),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(255, 166, 182, 1),
+          Color.fromRGBO(255, 232, 172, 1),
+          Color.fromRGBO(193, 237, 152, 1),
+          Color.fromRGBO(166, 228, 255, 1),
+        ]),
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
+          Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(212, 220, 254, 1),
+                borderRadius: BorderRadius.circular(25),
+                backgroundBlendMode: BlendMode.color,
+              ),
+              child: Text("2 дня")),
+          Text(
+            text,
+            style: HelperFunctions.pBlack,
+          ),
+          buttonsPanel(0),
+        ],
+      ));
 }
 
 void goOutApp(BuildContext context) {
@@ -571,7 +708,7 @@ void goOutApp(BuildContext context) {
       });
 }
 
-void nextScreen(context, page) {
+void nextScreen(BuildContext context, page) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 }
 

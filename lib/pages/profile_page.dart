@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage>
               icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: MyDrawer(fio: global_fio),
+      drawer: MyDrawer(),
       bottomNavigationBar: const MyBottomNavBar(),
       body: SingleChildScrollView(
         child: Container(

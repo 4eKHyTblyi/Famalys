@@ -1,17 +1,38 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
-  String fio;
-  ProfilePage({super.key, required this.fio});
+  final String fio;
+  const ProfilePage({super.key, required this.fio});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController fio_ctrl = TextEditingController();
+  TextEditingController nickName = TextEditingController(text: global_nickname);
+  TextEditingController tel = TextEditingController(text: global_phone);
+  TextEditingController description =
+      TextEditingController(text: global_description);
+  TextEditingController email = TextEditingController(text: global_email);
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    fio_ctrl = TextEditingController(text: widget.fio);
+  }
+
   @override
   Widget build(BuildContext context) {
     showDrawer(context) {
@@ -63,19 +84,32 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Image(
                             width: 107,
+                            height: 107,
                             fit: BoxFit.cover,
                             color: Colors.grey.withOpacity(0.9),
                             colorBlendMode: BlendMode.modulate,
-                            image: NetworkImage(FirebaseAuth
-                                .instance.currentUser!.photoURL
-                                .toString()),
+                            image: NetworkImage(global_avatar),
                           ),
                           Positioned(
                             left: 30,
                             child: IconButton(
                               icon: const Icon(Icons.edit),
                               color: Colors.white,
-                              onPressed: () {},
+                              onPressed: () async {
+                                var image = await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery);
+
+                                var storage = FirebaseStorage.instance;
+                                var storage_image =
+                                    storage.ref().child(image!.path);
+                                await storage_image.putFile(File(image.path));
+                                global_avatar =
+                                    await storage_image.getDownloadURL();
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .update({'avatar': global_avatar});
+                              },
                               iconSize: 30,
                             ),
                           ),
@@ -103,7 +137,23 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               ElevatedButton(
                   onPressed: () {
+                    print(global_avatar);
                     Navigator.pop(context);
+                    global_description = description.text;
+                    global_nickname = nickName.text;
+                    global_email = email.text;
+                    global_phone = tel.text;
+                    global_fio = fio_ctrl.text;
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .update({
+                      'fio': fio_ctrl.text,
+                      'nickname': nickName.text,
+                      'description': description.text,
+                      'phone': tel.text,
+                      'email': email.text
+                    });
                   },
                   clipBehavior: Clip.antiAlias,
                   style: ElevatedButton.styleFrom(
@@ -160,6 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color.fromRGBO(239, 242, 255, 1),
               borderRadius: BorderRadius.circular(25)),
           child: TextFormField(
+            controller: fio_ctrl,
             decoration: InputDecoration(
               hintStyle:
                   const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
@@ -190,6 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color.fromRGBO(239, 242, 255, 1),
               borderRadius: BorderRadius.circular(25)),
           child: TextFormField(
+            controller: nickName,
             decoration: InputDecoration(
               hintStyle:
                   const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
@@ -210,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Имя пользователя",
+            "Описание",
             style: HelperFunctions.pGrey,
           ),
         ),
@@ -220,14 +272,14 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color.fromRGBO(239, 242, 255, 1),
               borderRadius: BorderRadius.circular(25)),
           child: TextFormField(
+            controller: description,
             minLines: 1,
             maxLines: 10,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintStyle: TextStyle(
                   color: Color.fromRGBO(125, 132, 168, 1),
                   overflow: TextOverflow.clip),
-              hintText:
-                  "Semper faucibus bibendum odio cras tortor est. Ipsum vitae ut et id suspendisse diam. Ut in eget morbi id diam morbi.Elit etiam felis malesuada habitant lectus mattis ultricies fusce.Sed eu libero vel accumsan libero ac. Volutpat nam turpis facilisis nec. Quam mattis tincidunt bibendum convallis neque. Fusce mauris sed condimentum dolor quis ut.",
+              hintText: global_description,
               fillColor: Color.fromRGBO(239, 242, 255, 1),
               border: InputBorder.none,
             ),
@@ -254,9 +306,10 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color.fromRGBO(239, 242, 255, 1),
               borderRadius: BorderRadius.circular(25)),
           child: TextFormField(
-            decoration: const InputDecoration(
+            controller: tel,
+            decoration: InputDecoration(
               hintStyle: TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
-              hintText: "8 (000) 000 00-00",
+              hintText: global_phone,
               fillColor: Color.fromRGBO(239, 242, 255, 1),
               border: InputBorder.none,
             ),
@@ -283,10 +336,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: const Color.fromRGBO(239, 242, 255, 1),
               borderRadius: BorderRadius.circular(25)),
           child: TextFormField(
+            controller: email,
             decoration: InputDecoration(
               hintStyle:
                   const TextStyle(color: Color.fromRGBO(125, 132, 168, 1)),
-              hintText: FirebaseAuth.instance.currentUser!.email,
+              hintText: global_email,
               fillColor: const Color.fromRGBO(239, 242, 255, 1),
               border: InputBorder.none,
             ),

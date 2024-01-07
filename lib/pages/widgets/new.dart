@@ -25,6 +25,7 @@ class _NewPostState extends State<NewPost> {
   bool maxLinesMore = false;
   bool liked = false;
   int count = 0;
+  TextEditingController comment = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _NewPostState extends State<NewPost> {
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
-      height: 900,
+      height: maxLinesMore ? 600 : 900,
       constraints: const BoxConstraints(maxHeight: 1000),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +145,7 @@ class _NewPostState extends State<NewPost> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.645,
                 child: HelperFunctions.inputTemplate(
-                    "", "Ваш комментарий...", context),
+                    "", "Ваш комментарий...", context, comment),
               ),
               IconButton(
                   onPressed: () {},

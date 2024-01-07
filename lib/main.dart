@@ -40,7 +40,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isSignedIn = false;
 
-  getFio() async {
+  getUserInfo() async {
     var doc = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -48,7 +48,13 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       global_fio = doc.get('fio');
+      global_avatar = doc.get('avatar');
+      global_nickname = doc.get('name');
+      global_description = doc.get('description');
+      global_email = doc.get('email');
+      global_phone = doc.get('phone');
     });
+    print(global_avatar);
   }
 
   getUserLoggedInStatus() async {
@@ -59,13 +65,20 @@ class _MyAppState extends State<MyApp> {
         });
       }
     });
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      _isSignedIn = false;
+    }
+
+    if (_isSignedIn == true) {
+      getUserInfo();
+    }
   }
 
   @override
   void initState() {
     super.initState();
     getUserLoggedInStatus();
-    getFio();
   }
 
   // This widget is the root of your application.
