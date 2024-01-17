@@ -48,11 +48,10 @@ dependencies:
   random_string:
   font_awesome_flutter:
   camera:
-  path_provider:
   path:
   image_picker:
-  all_gallery_images:
-  flutter_image_compress:
+  photo_manager_image_provider:
+  photo_manager:
 
 
   # The following adds the Cupertino Icons font to your application.

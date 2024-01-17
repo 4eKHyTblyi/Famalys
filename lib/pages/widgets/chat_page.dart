@@ -1,12 +1,13 @@
 import 'dart:io';
-
 import 'package:all_gallery_images/all_gallery_images.dart';
 import 'package:all_gallery_images/model/StorageImages.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 import 'package:random_string/random_string.dart';
 
 import '../service/database_service.dart';
@@ -297,71 +298,59 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
-  StorageImages? _storageImages = StorageImages();
-
-  Future<void> getImagesFromGallery() async {
-    StorageImages? storageImages = StorageImages();
-    storageImages.images = [];
-    try {
-      print(storageImages.images!.length);
-      storageImages = await GalleryImages().getStorageImages();
-      print(storageImages!.images!.length);
-    } catch (error) {
-      debugPrint(error.toString());
-    }
-    setState(() {
-      _storageImages = storageImages;
-    });
-    if (!mounted) return;
-  }
+  
+  List<AssetEntityImage> assets = [];
 
   @override
   void initState() {
-    getImagesFromGallery();
-    doThisOnLaunch();
-    chatWith_Update(widget.id);
     super.initState();
+    doThisOnLaunch();
+    getAndSetMessages();
+    getImagesFromGallery();
+  }
+
+  Future<void> getImagesFromGallery(
+    required int maxCount,
+    required Request requestType,
+  ) async { 
+    StorageImages? storageImages;
+    try {
+      storageImages = await GalleryImages().getStorageImages();
+      print(storageImages!.images!.length);
+      storageImages.images!.clear();
+    } catch (error) {
+      print(12);
+      debugPrint(error.toString());
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _storageImages = storageImages;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<XFile?> compressFile(File file) async {
-      final filePath = file.absolute.path;
-
-      // Create output file path
-      // eg:- "Volume/VM/abcd_out.jpeg"
-      final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
-      final splitted = filePath.substring(0, (lastIndex));
-      final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
-      var result = await FlutterImageCompress.compressAndGetFile(
-        file.absolute.path,
-        outPath,
-        quality: 5,
-      );
-
-      print(file.lengthSync());
-
-      return result;
-    }
-
     void _show(BuildContext ctx) {
-      print(_storageImages!.images!.length);
+      _storageImages!.images!.clear();
       showModalBottomSheet(
           elevation: 10,
           backgroundColor: Colors.white,
           context: ctx,
-          builder: (ctx) => _storageImages != null
+          builder: (ctx) => storageImagesWithoutDublicate != null
               ? GridView.builder(
-                  itemCount: _storageImages!.images!.length,
+                  itemCount: storageImagesWithoutDublicate.images!.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                          File(_storageImages!.images![index].imagePath!)),
-                    );
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.file(
+                            File(storageImagesWithoutDublicate!
+                                .images![index].imagePath!),
+                            fit: BoxFit.fill));
                   },
                 )
               : const Center(child: CircularProgressIndicator()));
