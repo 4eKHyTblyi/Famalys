@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:all_gallery_images/all_gallery_images.dart';
-import 'package:all_gallery_images/model/StorageImages.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -298,7 +296,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
-  
   List<AssetEntityImage> assets = [];
 
   @override
@@ -306,50 +303,47 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     doThisOnLaunch();
     getAndSetMessages();
-    getImagesFromGallery();
   }
 
-  Future<void> getImagesFromGallery(
-    required int maxCount,
-    required Request requestType,
-  ) async { 
-    StorageImages? storageImages;
-    try {
-      storageImages = await GalleryImages().getStorageImages();
-      print(storageImages!.images!.length);
-      storageImages.images!.clear();
-    } catch (error) {
-      print(12);
-      debugPrint(error.toString());
-    }
+  // Future<void> getImagesFromGallery(
+  //   required int maxCount,
+  //   required Request requestType,
+  // ) async {
+  //   StorageImages? storageImages;
+  //   try {
+  //     storageImages = await GalleryImages().getStorageImages();
+  //     print(storageImages!.images!.length);
+  //     storageImages.images!.clear();
+  //   } catch (error) {
+  //     print(12);
+  //     debugPrint(error.toString());
+  //   }
 
-    if (!mounted) return;
+  //   if (!mounted) return;
 
-    setState(() {
-      _storageImages = storageImages;
-    });
-  }
+  //   setState(() {
+  //     _storageImages = storageImages;
+  //   });
+  // }
+  List _storageImages = [];
 
   @override
   Widget build(BuildContext context) {
     void _show(BuildContext ctx) {
-      _storageImages!.images!.clear();
       showModalBottomSheet(
           elevation: 10,
           backgroundColor: Colors.white,
           context: ctx,
-          builder: (ctx) => storageImagesWithoutDublicate != null
+          builder: (ctx) => _storageImages != null
               ? GridView.builder(
-                  itemCount: storageImagesWithoutDublicate.images!.length,
+                  itemCount: _storageImages.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
                   itemBuilder: (context, index) {
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.file(
-                            File(storageImagesWithoutDublicate!
-                                .images![index].imagePath!),
+                        child: Image.file(File(_storageImages[index].path),
                             fit: BoxFit.fill));
                   },
                 )
