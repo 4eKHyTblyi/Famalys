@@ -1,7 +1,4 @@
-import 'package:famalys/pages/widgets/message_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -179,17 +176,17 @@ class HelperFunctions {
 
   /// saving notifications prefs
 
-  static String _switch = "SWITCH";
-  static String _comments = "COMMENTS";
-  static String _messenger = "MESSENGER";
-  static String _publication = "PUBLICATION";
-  static String _reactions = "REACTIONS";
-  static String _chats = "CHATS";
+  static const String _switch = "SWITCH";
+  static const String _comments = "COMMENTS";
+  static const String _messenger = "MESSENGER";
+  static const String _publication = "PUBLICATION";
+  static const String _reactions = "REACTIONS";
+  static const String _chats = "CHATS";
 
   static Future<bool> saveNotificationsPreference(
-      String name_notifications, bool value_of_notifications) async {
+      String nameNotifications, bool valueOfNotifications) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    return await sf.setBool(name_notifications, value_of_notifications);
+    return await sf.setBool(nameNotifications, valueOfNotifications);
   }
 
   ///
@@ -270,9 +267,7 @@ class HelperFunctions {
             child: HelperFunctions.inputTemplate(
                 "label", "Поиск", context, controller)),
         HelperFunctions.buttomImageTemplate(
-            Image.asset('assets/search.png'), context, () {
-          print(1);
-        })
+            Image.asset('assets/search.png'), context, () {})
       ],
     );
   }
@@ -313,11 +308,11 @@ class HelperFunctions {
         borderRadius: BorderRadius.circular(15),
         shape: BoxShape.rectangle,
       ),
-      child: const Align(
+      child: Align(
         alignment: Alignment.bottomLeft,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: const [
             SizedBox(
               width: 50,
               child: Text(
@@ -394,9 +389,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     IconButton(
                       icon: const Icon(
@@ -404,9 +397,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     IconButton(
                       icon: const Icon(
@@ -414,9 +405,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     const Text(
                       '203',
@@ -499,9 +488,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     IconButton(
                       icon: const Icon(
@@ -509,9 +496,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     IconButton(
                       icon: const Icon(
@@ -519,9 +504,7 @@ class HelperFunctions {
                         color: Colors.white,
                         size: 24,
                       ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                     Text(
                       likes,
@@ -542,7 +525,7 @@ class HelperFunctions {
 
   game(String text, BuildContext context, String photoUrl, int likes,
       int category, int views) {
-    List<String> categories_image = [
+    List<String> categoriesImage = [
       "assets/games-category/phys.png",
       "assets/games-category/learn.png",
       "assets/games-category/voice.png",
@@ -569,7 +552,7 @@ class HelperFunctions {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Row(
-                  children: [Image.asset(categories_image[category])],
+                  children: [Image.asset(categoriesImage[category])],
                 ),
               )),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -591,7 +574,7 @@ buttonsPanel(int likes) {
       SizedBox(
         width: 40,
         child: IconButton(
-          icon: ImageIcon(
+          icon: const ImageIcon(
             AssetImage('assets/news/comment.png'),
           ),
           onPressed: () {},
@@ -600,7 +583,7 @@ buttonsPanel(int likes) {
       SizedBox(
         width: 40,
         child: IconButton(
-          icon: ImageIcon(
+          icon: const ImageIcon(
             AssetImage('assets/news/icons.png'),
           ),
           onPressed: () {},
@@ -612,7 +595,7 @@ buttonsPanel(int likes) {
             width: 40,
             child: IconButton(
               color: Colors.red,
-              icon: ImageIcon(
+              icon: const ImageIcon(
                 AssetImage('assets/news/like- 2.png'),
               ),
               onPressed: () {},
@@ -656,14 +639,14 @@ coursesTemplate(
                 fontSize: 18,
               )),
           Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              padding: EdgeInsets.all(8),
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Color.fromRGBO(212, 220, 254, 1),
+                color: const Color.fromRGBO(212, 220, 254, 1),
                 borderRadius: BorderRadius.circular(25),
                 backgroundBlendMode: BlendMode.color,
               ),
-              child: Text("2 дня")),
+              child: const Text("2 дня")),
           Text(
             text,
             style: HelperFunctions.pBlack,

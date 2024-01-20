@@ -3,9 +3,6 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 import 'package:random_string/random_string.dart';
 
 import '../service/database_service.dart';
@@ -296,7 +293,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
-  List<AssetEntityImage> assets = [];
+  //List<AssetEntity> images = [];
 
   @override
   void initState() {
@@ -305,26 +302,11 @@ class _ChatScreenState extends State<ChatScreen> {
     getAndSetMessages();
   }
 
-  // Future<void> getImagesFromGallery(
-  //   required int maxCount,
-  //   required Request requestType,
-  // ) async {
-  //   StorageImages? storageImages;
-  //   try {
-  //     storageImages = await GalleryImages().getStorageImages();
-  //     print(storageImages!.images!.length);
-  //     storageImages.images!.clear();
-  //   } catch (error) {
-  //     print(12);
-  //     debugPrint(error.toString());
-  //   }
-
-  //   if (!mounted) return;
-
-  //   setState(() {
-  //     _storageImages = storageImages;
-  //   });
+  // Future<void> getImagesFromGallery() async {
+  //   final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList();
+  //   print(paths.first);
   // }
+
   List _storageImages = [];
 
   @override

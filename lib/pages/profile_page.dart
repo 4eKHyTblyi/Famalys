@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:famalys/pages/widgets/bottom_nav_bar.dart';
@@ -32,6 +33,8 @@ class _ProfilePageState extends State<ProfilePage>
     _tabController2.dispose();
     super.dispose();
   }
+
+  var cars = FirebaseFirestore.instance.collection('cars').snapshots();
 
   @override
   Widget build(BuildContext context) {

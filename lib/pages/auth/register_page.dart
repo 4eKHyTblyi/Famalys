@@ -241,7 +241,7 @@ class _RegisterPageEndState extends State<RegisterPageEnd> {
                       FilteringTextInputFormatter.deny(RegExp(r'[ ]')),
                     ],
                     validator: (value) {},
-                    onTapOutside: (value) {
+                    onSaved: (value) {
                       if (!nickName.text.startsWith('@')) {
                         nickName.text = '@${nickName.text}';
                       }

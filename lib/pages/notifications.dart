@@ -128,14 +128,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
           switch (id) {
             case "SWITCH":
               LOCAL_SWITCH = !ok;
+              break;
             case "COMMENTS":
               LOCAL_COMMENTS = !ok;
+              break;
             case "REACTIONS":
               LOCAL_REACTIONS = !ok;
+              break;
             case "PUBLICATION":
               LOCAL_PUBLICATION = !ok;
+              break;
             case "CHATS":
               LOCAL_CHATS = !ok;
+              break;
             case "MESSENGER":
               LOCAL_MESSENGER = !ok;
           }

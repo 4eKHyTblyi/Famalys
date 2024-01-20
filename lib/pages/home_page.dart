@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               icon: Image.asset('assets/msg_icons.png'))
         ],
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
               child: Column(
                 children: [
-                  const Row(
-                    children: [
+                  Row(
+                    children: const [
                       VerticalDivider(
                         width: 5,
                         thickness: 5,

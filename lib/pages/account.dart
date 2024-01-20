@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/service/helper.dart';
-import 'package:famalys/pages/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

@@ -169,7 +169,7 @@ class _ListMessagesState extends State<ListMessages> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
       subtitle: Container(
         padding: const EdgeInsets.only(right: 20),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
@@ -196,7 +196,7 @@ class _ListMessagesState extends State<ListMessages> {
             .then((value) => value.get('fio'));
         List<CameraDescription> cameras = List.empty(growable: true);
         cameras = await availableCameras();
-        if (context.mounted) {
+        if (mounted) {
           nextScreen(
               context,
               ChatScreen(
