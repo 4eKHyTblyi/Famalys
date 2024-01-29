@@ -38,6 +38,7 @@ dependencies:
   firebase_messaging:
   http:
   google_sign_in:
+  flutter_sound:
   provider:
   flutter_login_vk:
   curved_navigation_bar:
@@ -50,6 +51,7 @@ dependencies:
   camera:
   path:
   image_picker:
+  gallery_picker:
 
 
   # The following adds the Cupertino Icons font to your application.

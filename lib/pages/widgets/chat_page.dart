@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
-
+import 'package:gallery_picker/gallery_picker.dart';
 import '../service/database_service.dart';
 import '../service/helper.dart';
 import 'message_tile.dart';
@@ -26,7 +28,8 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen>
+    with SingleTickerProviderStateMixin {
   String messageId = "";
   Stream? messageStream;
   late String myName, myProfilePic, myUserName, myEmail;
@@ -293,6 +296,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
+  List<MediaFile> selectedMedias = [];
+
   //List<AssetEntity> images = [];
 
   @override
@@ -300,79 +305,111 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     doThisOnLaunch();
     getAndSetMessages();
+    _tabController = TabController(length: myTabs.length, vsync: this);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
   // Future<void> getImagesFromGallery() async {
   //   final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList();
   //   print(paths.first);
   // }
 
-  List _storageImages = [];
+  static const List<Tab> myTabs = <Tab>[
+    Tab(icon: Icon(Icons.gif_box)),
+    Tab(
+      icon: Icon(Icons.image),
+    ),
+  ];
+
+  late TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
+    Future<void> pickMedia() async {
+      List<MediaFile>? media = await GalleryPicker.pickMedia(
+          context: context,
+          initSelectedMedia: selectedMedias,
+          extraRecentMedia: selectedMedias,
+          startWithRecent: true);
+      if (media != null) {
+        setState(() {
+          selectedMedias += media;
+        });
+      }
+      print(selectedMedias.first);
+    }
+
+    Future uploadImage(image) async {
+      if (image.isNotEmpty) {
+        for (var i = 0; i < image.length; i++) {
+          Reference storageRef = FirebaseStorage.instance.ref();
+          var file = storageRef.child("${widget.id}/${DateTime.now()}");
+          await file.putFile(File(image[i]!.path));
+
+          var url = await file.getDownloadURL();
+
+          addMessage(false, url);
+        }
+      }
+    }
+
     void _show(BuildContext ctx) {
       showModalBottomSheet(
           elevation: 10,
           backgroundColor: Colors.white,
           context: ctx,
-          builder: (ctx) => _storageImages != null
-              ? GridView.builder(
-                  itemCount: _storageImages.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+          builder: (ctx) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: HelperFunctions.inputTemplate(
+                          'label',
+                          'Введите сообщение',
+                          context,
+                          messageTextEdittingController),
+                    ),
                   ),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.file(File(_storageImages[index].path),
-                            fit: BoxFit.fill));
-                  },
-                )
-              : const Center(child: CircularProgressIndicator()));
-      // Container(
-      //       color: Colors.transparent,
-      //       alignment: Alignment.center,
-      //       child: Column(children: [
-      //         SizedBox(
-      //           height: 60,
-      //           child: Row(
-      //             children: [
-      //               ElevatedButton(
-      //                 style: const ButtonStyle(
-      //                     padding:
-      //                         MaterialStatePropertyAll(EdgeInsets.all(15)),
-      //                     backgroundColor:
-      //                         MaterialStatePropertyAll(Colors.transparent),
-      //                     elevation: MaterialStatePropertyAll(0)),
-      //                 child: Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Image.asset('assets/back.png'),
-      //                   ],
-      //                 ),
-      //                 onPressed: () => Navigator.of(context).pop(),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //         controller.value.isInitialized
-      //             ? Stack(
-      //                 children: [
-      //                   SizedBox(
-      //                     height: 100,
-      //                     child: CameraPreview(
-      //                       controller,
-      //                       child: SizedBox(
-      //                         height: 100,
-      //                       ),
-      //                     ),
-      //                   ),
-      //                 ],
-      //               )
-      //             : CircularProgressIndicator()
-      //       ]),
-      //     ));
+                  Row(children: [
+                    CircleAvatar(
+                      radius: 40,
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.gif_box_outlined,
+                            size: 40,
+                          )),
+                    ),
+                    CircleAvatar(
+                      radius: 40,
+                      child: IconButton(
+                          onPressed: () async {
+                            XFile? image = await ImagePicker().pickImage(
+                              source: ImageSource.gallery,
+                              imageQuality: 50,
+                            );
+                            uploadImage(image);
+                          },
+                          icon: Icon(
+                            Icons.image_outlined,
+                            size: 40,
+                          )),
+                    ),
+                  ])
+                ],
+              ),
+            );
+          });
     }
 
     return Scaffold(
@@ -432,23 +469,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   GestureDetector(
                       onTap: () async {
                         _show(context);
-                        // List<XFile?> image = await ImagePicker().pickMultiImage(
-                        //   imageQuality: 50,
-                        // );
-
-                        // if (image.isNotEmpty) {
-                        //   for (var i = 0; i < image.length; i++) {
-                        //     Reference storageRef =
-                        //         FirebaseStorage.instance.ref();
-                        //     var file = storageRef
-                        //         .child("${widget.id}/${DateTime.now()}");
-                        //     await file.putFile(File(image[i]!.path));
-
-                        //     var url = await file.getDownloadURL();
-
-                        //     addMessage(false, url);
-                        //   }
-                        // }
                       },
                       child: Image.asset(
                         'assets/icons.png',
@@ -462,6 +482,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         context,
                         messageTextEdittingController),
                   )),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.mic_none)),
                   Transform.rotate(
                     angle: 44.78,
                     child: GestureDetector(
