@@ -28,53 +28,47 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  camera: null
+  cloud_firestore: null
+  convex_bottom_bar: null
+  cupertino_icons: ^1.0.2
+  curved_navigation_bar: null
+  firebase_auth: null
+  firebase_core: null
+  firebase_messaging: null
+  firebase_storage: null
   flutter:
     sdk: flutter
-  cloud_firestore:
-  firebase_auth: 
-  firebase_core:
-  shared_preferences: 
-  firebase_storage:
-  firebase_messaging:
-  http:
-  google_sign_in:
-  flutter_sound:
-  provider:
-  flutter_login_vk:
-  curved_navigation_bar:
-  convex_bottom_bar:
-  flutter_translate:
-  flutter_instagram_stories: 
+  flutter_instagram_stories: null
+  flutter_login_vk: null
+  flutter_sound: null
+  flutter_translate: null
+  font_awesome_flutter: null
   getwidget: ^2.0.4
-  random_string:
-  font_awesome_flutter:
-  camera:
-  path:
-  image_picker:
-  gallery_picker:
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  google_sign_in: null
+  http: null
+  image_picker: null
+  record:
+  path: null
+  provider: null
+  random_string: null
+  shared_preferences: null
+  sizer: ^2.0.15
+  audioplayers: ^5.2.1
+  get:
+  permission_handler:
+  record_mp3:
+  path_provider:
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
-
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -83,50 +77,47 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - assets/
-      - assets/like.png
-      - assets/msg_back.png
-      - assets/ball.png
-      - assets/users.png
-      - assets/book.png
-      - assets/plus.png
-      - assets/courses.png
-      - assets/chat.png
-      - assets/rating.png
-      - assets/images.png
-      - assets/profile_with_level.png
-      - assets/Frame 547.png
-      - assets/Frame 718.png
-      - assets/icons.png
-      - assets/search.png
-      - assets/news/icons.png
-      - assets/news/like- 2.png
-      - assets/news/comment.png
-      - assets/bottom_menu/disable/home.png
-      - assets/bottom_menu/disable/add.png
-      - assets/bottom_menu/disable/profile.png
-      - assets/bottom_menu/disable/search.png
-      - assets/bottom_menu/disable/services.png
+    - assets/
+    - assets/like.png
+    - assets/msg_back.png
+    - assets/ball.png
+    - assets/users.png
+    - assets/book.png
+    - assets/plus.png
+    - assets/courses.png
+    - assets/chat.png
+    - assets/rating.png
+    - assets/images.png
+    - assets/profile_with_level.png
+    - assets/Frame 547.png
+    - assets/Frame 718.png
+    - assets/icons.png
+    - assets/search.png
+    - assets/news/icons.png
+    - assets/news/like- 2.png
+    - assets/news/comment.png
+    - assets/bottom_menu/disable/home.png
+    - assets/bottom_menu/disable/add.png
+    - assets/bottom_menu/disable/profile.png
+    - assets/bottom_menu/disable/search.png
+    - assets/bottom_menu/disable/services.png
 
-      - assets/bottom_menu/active/home.png
-      - assets/bottom_menu/active/add.png
-      - assets/bottom_menu/active/profile.png
-      - assets/bottom_menu/active/search.png
-      - assets/bottom_menu/active/services.png
-      - assets/search+ 3.png
+    - assets/bottom_menu/active/home.png
+    - assets/bottom_menu/active/add.png
+    - assets/bottom_menu/active/profile.png
+    - assets/bottom_menu/active/search.png
+    - assets/bottom_menu/active/services.png
+    - assets/search+ 3.png
 
-      - assets/games-category/phys.png
-      - assets/games-category/learn.png
-      - assets/games-category/voice.png
+    - assets/games-category/phys.png
+    - assets/games-category/learn.png
+    - assets/games-category/voice.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

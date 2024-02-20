@@ -57,9 +57,11 @@ class _IntaractivePageState extends State<IntaractivePage>
         ],
       ),
       bottomNavigationBar: const MyBottomNavBar(),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
         width: MediaQuery.of(context).size.width,
         child: Column(children: [
           Expanded(
@@ -81,17 +83,17 @@ class _IntaractivePageState extends State<IntaractivePage>
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: ListView(children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(
           'Игры',
           style: HelperFunctions.h1Black26,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        Text(
+        const Text(
             'Lorem ipsum dolor sit amet consectetur. Tincidunt sollicitudin eget pellentesque est at viverra neque.'),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -124,17 +126,17 @@ class _IntaractivePageState extends State<IntaractivePage>
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: ListView(children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(
           'Библиотека',
           style: HelperFunctions.h1Black26,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        Text(
+        const Text(
             'Мы собрали для вас самые интересные и полезные статьи и публикации от экспертов в различных областях, врачей и психологов. Наиболее интересующие вас статьи вы можете сохранять у себя в заметках или делиться ими со своими друзьями. '),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -163,7 +165,7 @@ class _IntaractivePageState extends State<IntaractivePage>
 
   Widget articles(int count, {bool? isGame}) {
     return Column(children: [
-      SizedBox(
+      const SizedBox(
         height: 30,
       ),
       if (isGame != null && isGame)
@@ -175,32 +177,27 @@ class _IntaractivePageState extends State<IntaractivePage>
   }
 
   Widget course(int count) {
-    return Column(children: [
-      SizedBox(
-        height: 30,
-      ),
-      coursesTemplate(
-          context, 'Тут должен быть текст', 'Тут должен быть текст', 'Автор', 1)
-    ]);
+    return coursesTemplate(
+        context, 'Тут должен быть текст', 'Тут должен быть текст', 'Автор', 1);
   }
 
   Widget courses() {
     TextEditingController search = TextEditingController();
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: ListView(children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(
           'Курсы',
           style: HelperFunctions.h1Black26,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        Text(
+        const Text(
             'Проходите квесты, чтобы найти для себя новую и интересную информацию. Развивайтесь и учитесь  вместе со своей семьёй.'),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -208,19 +205,20 @@ class _IntaractivePageState extends State<IntaractivePage>
               context, MediaQuery.of(context).size.width * 0.82, search),
         ),
 
-        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Column(
-            children: [
-              for (int i = 0; i < 3; i++) course(i),
-            ],
-          ),
-          Column(
-            children: [
-              for (int i = 0; i < 3; i++) course(i),
-            ],
-          ),
-        ])
-
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.614,
+          child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: 5,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3 / 4,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20),
+              itemBuilder: (context, index) {
+                return GridTile(child: course(index));
+              }),
+        )
         // SizedBox(
         //   height: MediaQuery.of(context).size.height * 3,
         //   width: MediaQuery.of(context).size.width,

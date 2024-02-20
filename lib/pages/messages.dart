@@ -184,9 +184,16 @@ class _ListMessagesState extends State<ListMessages> {
       title: Text(
         nick.toString(),
       ),
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: Image.network(photoUrl.toString()),
+      leading: Container(
+        width: 50,
+        height: 50,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Image.network(
+            photoUrl.toString(),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
       onTap: () async {
         String myName = await FirebaseFirestore.instance

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/global/global_vars.dart';
 import 'package:famalys/pages/account.dart';
+import 'package:famalys/pages/admin.dart';
 import 'package:famalys/pages/notifications.dart';
 import 'package:famalys/pages/security.dart';
 import 'package:famalys/pages/service/auth_service.dart';
@@ -147,7 +148,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   ListTile(
                     minVerticalPadding: 10,
                     minLeadingWidth: 10,
-                    onTap: () async {},
+                    onTap: () async {
+                      nextScreen(context, const AdminPage());
+                    },
                     leading: Image.asset(
                       'assets/users.png',
                       width: 24,

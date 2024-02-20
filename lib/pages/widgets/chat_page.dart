@@ -1,12 +1,19 @@
 import 'dart:io';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famalys/pages/widgets/audio_controller.dart';
+import 'package:famalys/pages/widgets/record_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:random_string/random_string.dart';
-import 'package:gallery_picker/gallery_picker.dart';
+import 'package:record_mp3/record_mp3.dart';
 import '../service/database_service.dart';
 import '../service/helper.dart';
 import 'message_tile.dart';
@@ -78,6 +85,7 @@ class _ChatScreenState extends State<ChatScreen>
       } else {
         messageInfoMap = {
           "image": photoUrl,
+          "text": message,
           "sender": FirebaseAuth.instance.currentUser!.uid,
           "time": lastMessageTs,
           "isRead": false
@@ -223,7 +231,7 @@ class _ChatScreenState extends State<ChatScreen>
                           return MessageTile(
                               sender: ds["sender"],
                               name: userName,
-                              message: "",
+                              message: ds["text"],
                               sentByMe:
                                   FirebaseAuth.instance.currentUser!.uid ==
                                       ds["sender"],
@@ -296,8 +304,6 @@ class _ChatScreenState extends State<ChatScreen>
     return true;
   }
 
-  List<MediaFile> selectedMedias = [];
-
   //List<AssetEntity> images = [];
 
   @override
@@ -327,22 +333,10 @@ class _ChatScreenState extends State<ChatScreen>
 
   late TabController _tabController;
 
+  final images = ValueNotifier<List<XFile?>>([]);
+
   @override
   Widget build(BuildContext context) {
-    Future<void> pickMedia() async {
-      List<MediaFile>? media = await GalleryPicker.pickMedia(
-          context: context,
-          initSelectedMedia: selectedMedias,
-          extraRecentMedia: selectedMedias,
-          startWithRecent: true);
-      if (media != null) {
-        setState(() {
-          selectedMedias += media;
-        });
-      }
-      print(selectedMedias.first);
-    }
-
     Future uploadImage(image) async {
       if (image.isNotEmpty) {
         for (var i = 0; i < image.length; i++) {
@@ -352,8 +346,10 @@ class _ChatScreenState extends State<ChatScreen>
 
           var url = await file.getDownloadURL();
 
-          addMessage(false, url);
+          addMessage(true, url);
         }
+      } else {
+        addMessage(true, '');
       }
     }
 
@@ -385,7 +381,7 @@ class _ChatScreenState extends State<ChatScreen>
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.gif_box_outlined,
                             size: 40,
                           )),
@@ -394,13 +390,18 @@ class _ChatScreenState extends State<ChatScreen>
                       radius: 40,
                       child: IconButton(
                           onPressed: () async {
-                            XFile? image = await ImagePicker().pickImage(
-                              source: ImageSource.gallery,
+                            List<XFile?> image =
+                                await ImagePicker().pickMultiImage(
                               imageQuality: 50,
                             );
-                            uploadImage(image);
+
+                            setState(() {
+                              images.value = image;
+                            });
+
+                            Navigator.of(context).pop();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.image_outlined,
                             size: 40,
                           )),
@@ -410,6 +411,136 @@ class _ChatScreenState extends State<ChatScreen>
               ),
             );
           });
+    }
+
+    var mainColor = Theme.of(context).primaryColor;
+    late String recordFilePath;
+    AudioController audioController = Get.put(AudioController());
+    int i = 0;
+
+    Future<bool> checkPermission() async {
+      if (!await Permission.microphone.isGranted) {
+        PermissionStatus status = await Permission.microphone.request();
+        if (status != PermissionStatus.granted) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    Future<String> getFilePath() async {
+      Directory storageDirectory = await getApplicationDocumentsDirectory();
+      String sdPath =
+          "${storageDirectory.path}/record${DateTime.now().microsecondsSinceEpoch}.acc";
+      var d = Directory(sdPath);
+      if (!d.existsSync()) {
+        d.createSync(recursive: true);
+      }
+      return "$sdPath/test_${i++}.mp3";
+    }
+
+    void startRecord() async {
+      bool hasPermission = await checkPermission();
+      if (hasPermission) {
+        recordFilePath = await getFilePath();
+        RecordMp3.instance.start(recordFilePath, (type) {
+          setState(() {});
+        });
+      } else {}
+      setState(() {});
+    }
+
+    void stopRecord() async {
+      bool stop = RecordMp3.instance.stop();
+      audioController.end.value = DateTime.now();
+      audioController.calcDuration();
+      var ap = AudioPlayer();
+      await ap.play(AssetSource("Notification.mp3"));
+      ap.onPlayerComplete.listen((a) {});
+      if (stop) {
+        audioController.isRecording.value = false;
+        audioController.isSending.value = true;
+        //await uploadAudio();
+      }
+    }
+
+    AudioPlayer audioPlayer = AudioPlayer();
+
+    Widget _audio({
+      required String message,
+      required bool isCurrentUser,
+      required int index,
+      required String time,
+      required String duration,
+    }) {
+      return Container(
+        width: MediaQuery.of(context).size.width * 0.5,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isCurrentUser ? mainColor : mainColor.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                audioController.onPressedPlayButton(index, message);
+                // changeProg(duration: duration);
+              },
+              onSecondaryTap: () {
+                audioPlayer.stop();
+                //   audioController.completedPercentage.value = 0.0;
+              },
+              child: Obx(
+                () => (audioController.isRecordPlaying &&
+                        audioController.currentId == index)
+                    ? Icon(
+                        Icons.cancel,
+                        color: isCurrentUser ? Colors.white : mainColor,
+                      )
+                    : Icon(
+                        Icons.play_arrow,
+                        color: isCurrentUser ? Colors.white : mainColor,
+                      ),
+              ),
+            ),
+            Obx(
+              () => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      // Text(audioController.completedPercentage.value.toString(),style: TextStyle(color: Colors.white),),
+                      LinearProgressIndicator(
+                        minHeight: 5,
+                        backgroundColor: Colors.grey,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          isCurrentUser ? Colors.white : mainColor,
+                        ),
+                        value: (audioController.isRecordPlaying &&
+                                audioController.currentId == index)
+                            ? audioController.completedPercentage.value
+                            : audioController.totalDuration.value.toDouble(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              duration,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: isCurrentUser ? Colors.white : mainColor),
+            ),
+          ],
+        ),
+      );
     }
 
     return Scaffold(
@@ -458,42 +589,96 @@ class _ChatScreenState extends State<ChatScreen>
         elevation: 0,
       ),
       body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
           chatMessages(),
           Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            height: 170,
+            width: double.infinity,
             alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  GestureDetector(
-                      onTap: () async {
-                        _show(context);
-                      },
-                      child: Image.asset(
-                        'assets/icons.png',
-                      )),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: HelperFunctions.inputTemplate(
-                        'label',
-                        'Введите сообщение',
-                        context,
-                        messageTextEdittingController),
-                  )),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.mic_none)),
-                  Transform.rotate(
-                    angle: 44.78,
-                    child: GestureDetector(
-                        onTap: () {
-                          addMessage(true, '');
+            child: ValueListenableBuilder(
+              valueListenable: images,
+              builder: (ctx, v, widget) {
+                print(images.value.length);
+                return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: images.value.length,
+                    itemBuilder: (ctx, i) {
+                      return Stack(
+                        alignment: Alignment.topRight,
+                        textDirection: TextDirection.rtl,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Image.file(
+                            File(images.value[i]!.path),
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            right: -20,
+                            top: -20,
+                            child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    images.value.removeAt(i);
+                                  });
+                                },
+                                icon: Icon(Icons.cancel_outlined)),
+                          ),
+                        ],
+                      );
+                    });
+              },
+            ),
+          ),
+          Container(
+            height: 70,
+            alignment: Alignment.bottomCenter,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () async {
+                          _show(context);
                         },
                         child: Image.asset(
-                          'assets/msg_icons.png',
+                          'assets/icons.png',
                         )),
-                  )
-                ],
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: HelperFunctions.inputTemplate(
+                          'label',
+                          'Введите сообщение',
+                          context,
+                          messageTextEdittingController),
+                    )),
+                    GestureDetector(
+                        onLongPressStart: (details) async {
+                          startRecord();
+                        },
+                        onLongPressEnd: (details) async {
+                          stopRecord();
+                        },
+                        child: (Icon(Icons.mic_rounded))),
+                    Transform.rotate(
+                      angle: 44.78,
+                      child: GestureDetector(
+                          onTap: () {
+                            uploadImage(images.value);
+                            images.value = [];
+                          },
+                          child: Image.asset(
+                            'assets/msg_icons.png',
+                          )),
+                    )
+                  ],
+                ),
               ),
             ),
           )

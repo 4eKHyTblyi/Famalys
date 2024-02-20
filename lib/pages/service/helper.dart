@@ -1,3 +1,4 @@
+import 'package:famalys/pages/intaractive_pages/course.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,9 @@ class HelperFunctions {
   static String userProfilePicKey = "USERPROFILEPICKEY";
 
 //Styles
+
+  static Color lightGrey = const Color.fromRGBO(125, 132, 168, 1);
+
   static TextStyle h1 = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
       fontSize: 20,
@@ -29,6 +33,9 @@ class HelperFunctions {
 
   static TextStyle h1Black26 = const TextStyle(
       color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500);
+
+  static TextStyle h1Black32 = const TextStyle(
+      color: Colors.black, fontSize: 32, fontWeight: FontWeight.w500);
 
   static TextStyle h2 = const TextStyle(
       color: Color.fromRGBO(125, 132, 168, 1),
@@ -47,6 +54,9 @@ class HelperFunctions {
 
   static TextStyle pBlack = const TextStyle(
       color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400);
+
+  static TextStyle pWhite = const TextStyle(
+      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400);
 
   static EdgeInsets paddingH15V10 =
       const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
@@ -141,6 +151,34 @@ class HelperFunctions {
       alignment: Alignment.center,
       height: 44,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(
+        image: const DecorationImage(
+            image: AssetImage('assets/Acuarela2.png'), fit: BoxFit.cover),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(255, 166, 182, 1),
+          Color.fromRGBO(255, 232, 172, 1),
+          Color.fromRGBO(193, 237, 152, 1),
+          Color.fromRGBO(166, 228, 255, 1),
+        ]),
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Text(
+        text,
+        style: pGrey16,
+      ),
+    );
+  }
+
+  static Widget widgetWithGradient(text,
+      [double height = 44,
+      double width = 200,
+      double pV = 10,
+      double pH = 20]) {
+    return Container(
+      alignment: Alignment.center,
+      height: height,
+      width: width,
+      padding: EdgeInsets.symmetric(vertical: pV, horizontal: pH),
       decoration: BoxDecoration(
         image: const DecorationImage(
             image: AssetImage('assets/Acuarela2.png'), fit: BoxFit.cover),
@@ -257,6 +295,22 @@ class HelperFunctions {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userProfilePicKey);
   }
+
+  // getting the data from SF
+
+  //Logic Functions
+
+  String days(int days) {
+    if (days % 10 == 1) {
+      return "$days день.";
+    } else if (days % 10 >= 2 && days % 10 <= 4) {
+      return "$days дня.";
+    } else {
+      return "$days дней.";
+    }
+  }
+
+  //UI Functions
 
   static Widget searchInput(
       BuildContext context, double width, TextEditingController controller) {
@@ -613,47 +667,50 @@ buttonsPanel(int likes) {
 
 coursesTemplate(
     BuildContext context, String title, String text, String likes, int long) {
-  return Container(
-      width: MediaQuery.of(context).size.width / 2.3,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-            image: AssetImage('assets/Acuarela2.png'), fit: BoxFit.cover),
-        gradient: const LinearGradient(colors: [
-          Color.fromRGBO(255, 166, 182, 1),
-          Color.fromRGBO(255, 232, 172, 1),
-          Color.fromRGBO(193, 237, 152, 1),
-          Color.fromRGBO(166, 228, 255, 1),
-        ]),
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title,
-              style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              )),
-          Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(212, 220, 254, 1),
-                borderRadius: BorderRadius.circular(25),
-                backgroundBlendMode: BlendMode.color,
-              ),
-              child: const Text("2 дня")),
-          Text(
-            text,
-            style: HelperFunctions.pBlack,
-          ),
-          buttonsPanel(0),
-        ],
-      ));
+  return InkWell(
+    onTap: () {
+      nextScreen(context, CourseInfo());
+    },
+    child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        decoration: BoxDecoration(
+          image: const DecorationImage(
+              image: AssetImage('assets/Acuarela2.png'), fit: BoxFit.cover),
+          gradient: const LinearGradient(colors: [
+            Color.fromRGBO(255, 166, 182, 1),
+            Color.fromRGBO(255, 232, 172, 1),
+            Color.fromRGBO(193, 237, 152, 1),
+            Color.fromRGBO(166, 228, 255, 1),
+          ]),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                )),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(212, 220, 254, 1),
+                  borderRadius: BorderRadius.circular(25),
+                  backgroundBlendMode: BlendMode.color,
+                ),
+                child: const Text("2 дня")),
+            Text(
+              text,
+              style: HelperFunctions.pBlack,
+            ),
+            buttonsPanel(0),
+          ],
+        )),
+  );
 }
 
 void goOutApp(BuildContext context) {

@@ -1,14 +1,10 @@
 import 'package:async/src/result/result.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famalys/pages/auth/register_page.dart';
 import 'package:famalys/pages/home_page.dart';
 import 'package:famalys/pages/service/auth_service.dart';
-import 'package:famalys/pages/service/provider/vk_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:famalys/pages/service/helper.dart';
 import 'package:flutter_login_vk/flutter_login_vk.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -26,10 +26,10 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
   late TabController tabController;
 
   List page_list = [
-    HomePage(),
-    SearchPage(),
-    NewPublicationPage(),
-    ProfilePage(),
+    const HomePage(),
+    const SearchPage(),
+    const NewPublicationPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -61,10 +61,10 @@ class _MyBottomNavBarState extends State<MyBottomNavBar>
               context: context,
               position: RelativeRect.fromDirectional(
                   textDirection: TextDirection.ltr,
-                  start: 100,
-                  top: 470,
-                  end: 10,
-                  bottom: 70),
+                  start: MediaQuery.of(context).size.width,
+                  top: MediaQuery.of(context).size.height * 0.67,
+                  end: MediaQuery.of(context).size.width * 0,
+                  bottom: MediaQuery.of(context).size.height * 0),
               items: [
                 PopupMenuItem(
                     onTap: () {
