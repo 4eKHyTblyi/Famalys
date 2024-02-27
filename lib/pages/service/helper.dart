@@ -56,7 +56,7 @@ class HelperFunctions {
       color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400);
 
   static TextStyle pWhite = const TextStyle(
-      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400);
+      color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400);
 
   static EdgeInsets paddingH15V10 =
       const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
@@ -169,11 +169,13 @@ class HelperFunctions {
     );
   }
 
-  static Widget widgetWithGradient(text,
-      [double height = 44,
-      double width = 200,
-      double pV = 10,
-      double pH = 20]) {
+  static Widget widgetWithGradient(
+    text, [
+    double height = 44,
+    double width = 200,
+    double pV = 10,
+    double pH = 20,
+  ]) {
     return Container(
       alignment: Alignment.center,
       height: height,
@@ -192,7 +194,7 @@ class HelperFunctions {
       ),
       child: Text(
         text,
-        style: pGrey16,
+        style: pWhite,
       ),
     );
   }
@@ -669,7 +671,7 @@ coursesTemplate(
     BuildContext context, String title, String text, String likes, int long) {
   return InkWell(
     onTap: () {
-      nextScreen(context, CourseInfo());
+      nextScreen(context, const CourseInfo());
     },
     child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

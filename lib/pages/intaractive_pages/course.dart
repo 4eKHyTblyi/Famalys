@@ -1,4 +1,5 @@
 import 'package:famalys/pages/service/helper.dart';
+import 'package:famalys/pages/widgets/undered_list.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -55,7 +56,7 @@ class CourseInfo extends StatelessWidget {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(bottom: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,9 +68,77 @@ class CourseInfo extends StatelessWidget {
                         MediaQuery.of(context).size.width / 2, 3, 5),
                   ],
                 )),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Вы узнаете', style: HelperFunctions.h1Black26),
+                  UnorderedList(const [
+                    'Как понять себя, стать лучше и найти своё предназначение?',
+                    'Как улучшить взаимоотношения с людьми?',
+                    'Как стать увереннее в себе?',
+                    "Lorem ipsum dolor...'",
+                  ]),
+                ],
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.only(bottom: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Программа курса', style: HelperFunctions.h1Black26),
+                    blocksList(5, context),
+                  ],
+                )),
           ])),
     );
   }
+}
+
+int selectedIndex = 0;
+
+blocksList(
+  int count,
+  BuildContext context,
+) {
+  return Container(
+      width: MediaQuery.of(context).size.width / 2,
+      height: 50,
+      child: ListView.builder(
+          itemCount: count,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            if (index == selectedIndex) {
+              return HelperFunctions.widgetWithGradient(
+                'Блок $index',
+                30,
+                100,
+                2,
+                5,
+              );
+            } else {
+              return GestureDetector(
+                onTap: () {
+                  selectedIndex = index;
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: HelperFunctions.lightGrey,
+                  ),
+                  child: Text(
+                    '$index',
+                    style: HelperFunctions.pGrey,
+                  ),
+                ),
+              );
+            }
+            return Container(width: 100);
+          }));
 }
 
 ///
